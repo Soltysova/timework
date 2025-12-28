@@ -1,85 +1,76 @@
-// js/modul.js
-throw new Error('TEST – toto je správný modul.js');
-
-import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
-import { GLTFLoader } from 'https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
-
-console.log('modul.js se načetl');
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const container = document.getElementById('model');
-const isMobile = window.innerWidth < 768;
 
-/* ================= MOBILE FALLBACK ================= */
+/* SCÉNA */
+const scene = new THREE.Scene();
 
-if (isMobile) {
-  const img = document.createElement('img');
-  img.src = 'img/model_static.png';
-  img.alt = 'Sedící postava';
-  img.style.width = '100%';
-  img.style.height = '100%';
-  img.style.objectFit = 'contain';
-  container.appendChild(img);
-}
+/* KAMERA */
+const camera = new THREE.PerspectiveCamera(
+  45,
+  container.clientWidth / container.clientHeight,
+  0.1,
+  100
+);
+camera.position.set(0, 0, 4);
 
-/* ================= THREE.JS ================= */
+/* RENDERER */
+const renderer = new THREE.WebGLRenderer({
+  alpha: true,
+  antialias: true
+});
+renderer.setSize(container.clientWidth, container.clientHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+container.appendChild(renderer.domElement);
 
-if (!isMobile) {
+/* SVĚTLA */
+scene.add(new THREE.AmbientLight(0xffffff, 0.8));
 
-  const scene = new THREE.Scene();
+const light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(5, 5, 5);
+scene.add(light);
 
-  const camera = new THREE.PerspectiveCamera(
-    35,
-    container.clientWidth / container.clientHeight,
-    0.1,
-    100
-  );
-  camera.position.set(0, 1.4, 3);
+/* MODEL */
+let model;
 
-  const renderer = new THREE.WebGLRenderer({
-    alpha: true,
-    antialias: true
-  });
+const loader = new GLTFLoader();
+loader.load(
+  '/img/model.glb', // upravte cestu podle reality
+  (gltf) => {
+    model = gltf.scene;
+    model.scale.set(1.2, 1.2, 1.2);
+    scene.add(model);
+  }
+);
 
-  renderer.setSize(container.clientWidth, container.clientHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  container.appendChild(renderer.domElement);
+/* INTERAKCE MYŠI */
+let mouseX = 0;
+let mouseY = 0;
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+document.addEventListener('mousemove', (e) => {
+  const rect = container.getBoundingClientRect();
+  mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+  mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+});
 
-  const keyLight = new THREE.DirectionalLight(0xffffff, 0.6);
-  keyLight.position.set(2, 4, 2);
-  scene.add(keyLight);
+/* ANIMACE */
+function animate() {
+  requestAnimationFrame(animate);
 
-  let head = null;
-
-  const loader = new GLTFLoader();
-  loader.load(
-    'img/model.glb',
-    (gltf) => {
-      const model = gltf.scene;
-      scene.add(model);
-      head = model.getObjectByName('Head');
-    },
-    undefined,
-    (err) => console.error('Chyba při načítání modelu:', err)
-  );
-
-  document.addEventListener('mousemove', (e) => {
-    if (!head) return;
-    const x = (e.clientX / window.innerWidth) * 2 - 1;
-    head.rotation.y = x * 0.4;
-  });
-
-  window.addEventListener('resize', () => {
-    camera.aspect = container.clientWidth / container.clientHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(container.clientWidth, container.clientHeight);
-  });
-
-  function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
+  if (model) {
+    model.rotation.y += (mouseX * 0.5 - model.rotation.y) * 0.05;
+    model.rotation.x += (-mouseY * 0.5 - model.rotation.x) * 0.05;
   }
 
-  animate();
+  renderer.render(scene, camera);
 }
+
+animate();
+
+/* RESIZE */
+window.addEventListener('resize', () => {
+  camera.aspect = container.clientWidth / container.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(container.clientWidth, container.clientHeight);
+});

@@ -10,10 +10,9 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
   45,
   container.clientWidth / container.clientHeight,
-  0.1,
-  100
+  0.01,
+  1000
 );
-camera.position.set(0, 0, 4);
 
 /* RENDERER */
 const renderer = new THREE.WebGLRenderer({
@@ -25,52 +24,37 @@ renderer.setPixelRatio(window.devicePixelRatio);
 container.appendChild(renderer.domElement);
 
 /* SVĚTLA */
-scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+scene.add(new THREE.AmbientLight(0xffffff, 0.6));
 
 const light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(5, 5, 5);
+light.position.set(5, 10, 7);
 scene.add(light);
+
+/* DEBUG – můžete zakomentovat */
+// scene.add(new THREE.AxesHelper(2));
+// scene.add(new THREE.GridHelper(10, 10));
 
 /* MODEL */
 let model;
 
 const loader = new GLTFLoader();
-loader.load(
-  '/img/model.glb', // upravte cestu podle reality
-  (gltf) => {
-    model = gltf.scene;
-    model.scale.set(1.2, 1.2, 1.2);
-    scene.add(model);
-  }
-);
+loader.load('/img/model.glb', (gltf) => {
 
-/* INTERAKCE MYŠI */
-let mouseX = 0;
-let mouseY = 0;
+  model = gltf.scene;
+  scene.add(model);
 
-document.addEventListener('mousemove', (e) => {
-  const rect = container.getBoundingClientRect();
-  mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-  mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-});
+  /* --- VÝPOČET ROZMĚRŮ --- */
+  const box = new THREE.Box3().setFromObject(model);
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
 
-/* ANIMACE */
-function animate() {
-  requestAnimationFrame(animate);
+  /* --- VYCENTROVÁNÍ MODELU --- */
+  model.position.sub(center);
 
-  if (model) {
-    model.rotation.y += (mouseX * 0.5 - model.rotation.y) * 0.05;
-    model.rotation.x += (-mouseY * 0.5 - model.rotation.x) * 0.05;
-  }
+  /* --- NASTAVENÍ KAMERY PODLE MODELU --- */
+  const maxDim = Math.max(size.x, size.y, size.z);
+  const fov = camera.fov * (Math.PI / 180);
+  let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
 
-  renderer.render(scene, camera);
-}
-
-animate();
-
-/* RESIZE */
-window.addEventListener('resize', () => {
-  camera.aspect = container.clientWidth / container.clientHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(container.clientWidth, container.clientHeight);
-});
+  cameraZ *= 1.5; // rezerva
+  camera.po
