@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+	<!--
+© 2025 Berta Soltysova / design
+
+Tento kód je chráněn autorským právem.
+Jakékoliv kopírování, úpravy nebo další šíření bez souhlasu autora jsou zakázány.
+-->
+<meta charset="UTF-8">
+<title>3D animace</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<header>
+  <a href="../index.html">
+    <img src="../img/logo.png" class="logo" alt="Logo">
+  </a>
+
+  <input type="checkbox" id="menu-toggle">
+  <label for="menu-toggle" class="menu-icon">
+    <span></span><span></span><span></span>
+  </label>
+
+  <nav>
+    <a href="kresba.html">KRESBA</a>
+    <a href="malba.html">MALBA</a>
+    <a href="ilustrace.html">ILUSTRACE</a>
+    <a href="grafika.html">GRAFIKA</a>
+    <a href="3d.html">3D</a>
+    <a href="kontakt.html">KONTAKT</a>
+  </nav>
+</header>
+
+<!-- ================= 3D GRID ================= -->
+
+<section class="threed-grid">
+
+   <!-- LEVÝ SLOUPEC – TEXT -->
+<a href="#proc1-01" class="threed-item threed-text">
+  <span>
+    3D ANIMACE –<br>
+    postup procesu
+  </span>
+</a>
+
+<!-- PRAVÝ SLOUPEC – VIDEO (VIDITELNÉ HNED PO NAČTENÍ) -->
+  <div class="threed-item threed-animation show">
+    <video src="../img/animace/Maska.mp4" autoplay muted loop playsinline></video>
+  </div>
+
+</section>
+
+<!-- ================= LIGHTBOX – VYSVĚTLENÍ ================= -->
+
+<div id="proc1-01" class="lightbox">
+  <a href="#" class="lightbox-close"></a>
+
+  <a href="#proc1-12" class="lightbox-nav prev">‹</a>
+  <a href="#proc1-02" class="lightbox-nav next">›</a>
+
+  <figure>
+    <img src="../img/3d_maska-01.jpg" alt="Postup animace">
+    <figcaption>Metodický manuál</figcaption>
+  </figure>
+</div>
+<div id="proc1-02" class="lightbox">
+  <a href="#" class="lightbox-close"></a>
+
+  <a href="#proc1-01" class="lightbox-nav prev">‹</a>
+  <a href="#proc1-03" class="lightbox-nav next">›</a>
+
+  <figure>
+    <img src="../img/3d_maska-02.jpg" alt="Postup animace">
+    <figcaption>První kroky v Blendru</figcaption>
+  </figure>
+</div>
+<div id="proc1-03" class="lightbox">
+  <a href="#" class="lightbox-close"></a>
+
+  <a href="#proc1-02" class="lightbox-nav prev">‹</a>
+  <a href="#proc1-04" class="lightbox-nav next">›</a>
+
+  <figure>
+    <img src="../img/3d_maska-03.jpg" alt="Postup animace">
+    <figcaption></figcaption>
+  </figure>
+</div>
+<div id="proc1-04" class="lightbox">
+  <a href="#" class="lightbox-close"></a>
+
+  <a href="#proc1-03" class="lightbox-nav prev">‹</a>
+  <a href="#proc1-05" class="lightbox-nav next">›</a>
+
+  <figure>
+    <img src="../img/3d_maska-04.jpg" alt="Postup animace">
+    <figcaption>1. návrh na semestrální práci – 3D modelace dutiny ústní</figcaption>
+  </figure>
+</div>
+<div id="proc1-05" class="lightbox">
+  <a href="#" class="lightbox-close"></a>
+
+  <a href="#proc1-04" class="lightbox-nav prev">‹</a>
+  <a href="#proc1-06" class="lightbox-nav next">›</a>
+
+  <figure>
+    <img src="../img/3d_maska-05.jpg" alt="Postup animace">
+    <figcaption>1. návrh na semestrální práci – 3D model</figcaption>
+  </figure>
+</div>
+<div id="proc1-06" class="lightbox">
+  <a href="#" class="lightbox-close"></a>
+
+  <a href="#proc1-05" class="lightbox-nav prev">‹</a>
+  <a href="#proc1-07" class="lightbox-nav next">›</a>
+
+  <figure>
+    <img src="../img/3d_maska-06.jpg" alt="Postup animace">
+    <figcaption>1. návrh na semestrální práci – fantastické ovoce</figcaption>
+  </figure>
+</div>	
+<div id="proc1-07" class="lightbox">
+  <a href="#" class="lightbox-close"></a>
+
+  <a href="#proc1-06" class="lightbox-nav prev">‹</a>
+  <a href="#proc1-08" class="lightbox-nav next">›</a>
+
+  <figure>
+    <img src="../img/3d_maska-07.jpg" alt="Postup animace">
+    <figcaption> 2. návrh na semestrální práci – vězení</figcaption>
+  </figure>
+</div>
+<div id="proc1-08" class="lightbox">
+  <a href="#" class="lightbox-close"></a>
+
+  <a href="#proc1-07" class="lightbox-nav prev">‹</a>
+  <a href="#proc1-09" class="lightbox-nav next">›</a>
+
+  <figure>
+    <img src="../img/3d_maska-08.jpg" alt="Postup animace">
+    <figcaption>Finální práce</figcaption>
+  </figure>
+</div>
+<div id="proc1-09" class="lightbox">
+  <a href="#" class="lightbox-close"></a>
+
+  <a href="#proc1-08" class="lightbox-nav prev">‹</a>
+  <a href="#proc1-10" class="lightbox-nav next">›</a>
+
+  <figure>
+    <img src="../img/3d_maska-09.jpg" alt="Postup animace">
+    <figcaption></figcaption>
+  </figure>
+</div>
+<div id="proc1-10" class="lightbox">
+  <a href="#" class="lightbox-close"></a>
+
+  <a href="#proc1-09" class="lightbox-nav prev">‹</a>
+  <a href="#proc1-11" class="lightbox-nav next">›</a>
+
+  <figure>
+    <img src="../img/3d_maska-10.jpg" alt="Postup animace">
+    <figcaption>Design figury</figcaption>
+  </figure>
+</div>
+<div id="proc1-11" class="lightbox">
+  <a href="#" class="lightbox-close"></a>
+
+  <a href="#proc1-09" class="lightbox-nav prev">‹</a>
+  <a href="#proc1-12" class="lightbox-nav next">›</a>
+
+  <figure>
+    <img src="../img/3d_maska-11.jpg" alt="Postup animace">
+    <figcaption>1. scéna</figcaption>
+  </figure>
+</div>
+<div id="proc1-12" class="lightbox">
+  <a href="#" class="lightbox-close"></a>
+
+  <a href="#proc1-11" class="lightbox-nav prev">‹</a>
+  <a href="#anim1" class="lightbox-nav next">›</a>
+
+  <figure>
+    <img src="../img/3d_maska-12.jpg" alt="Postup animace">
+    <figcaption>2. scéna</figcaption>
+  </figure>
+</div>
+
+</body>
+</html>
