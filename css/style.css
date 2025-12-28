@@ -39,6 +39,7 @@ header {
   width: 100%;
   gap: 24px;
   position: relative;
+  z-index: 2000;
 }
 
 .logo {
