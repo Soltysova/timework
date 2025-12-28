@@ -43,18 +43,27 @@ loader.load('/img/model.glb', (gltf) => {
   model = gltf.scene;
   scene.add(model);
 
-  /* --- VÝPOČET ROZMĚRŮ --- */
+  // DEBUG: pomocné objekty
+  scene.add(new THREE.AxesHelper(5));
+
+  // 1) tvrdé nastavení pozice a měřítka
+  model.position.set(0, 0, 0);
+  model.scale.set(1, 1, 1);
+
+  // 2) box + info
   const box = new THREE.Box3().setFromObject(model);
   const size = box.getSize(new THREE.Vector3());
   const center = box.getCenter(new THREE.Vector3());
 
-  /* --- VYCENTROVÁNÍ MODELU --- */
-  model.position.sub(center);
+  console.log('SIZE:', size);
+  console.log('CENTER:', center);
 
-  /* --- NASTAVENÍ KAMERY PODLE MODELU --- */
-  const maxDim = Math.max(size.x, size.y, size.z);
-  const fov = camera.fov * (Math.PI / 180);
-  let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+  // 3) extrémně konzervativní kamera
+  camera.position.set(0, 0, 10);
+  camera.near = 0.001;
+  camera.far = 10000;
+  camera.lookAt(0, 0, 0);
+  camera.updateProjectionMatrix();
 
-  cameraZ *= 1.5; // rezerva
-  camera.po
+});
+
