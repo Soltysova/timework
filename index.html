@@ -11,31 +11,41 @@ Jakékoliv kopírování, úpravy nebo další šíření bez souhlasu autora js
 <meta charset="UTF-8">
 <link rel="icon" href="favicon.png" type="image/png">
 <title>Portfolio – Úvod</title>
+
+<!-- Opravená Import Mapa -->
+<script type="importmap">
+  {
+    "imports": {
+      "three": "unpkg.com",
+      "three/addons/": "unpkg.com"
+    }
+  }
+</script>
+
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <section class="hero">
-<div class="hero-links-left">
-<a href="pages/kresba.html">KRESBA</a>
-<a href="pages/malba.html">MALBA</a>
-<a href="pages/ilustrace.html">ILUSTRACE</a>
-</div>
+    <div class="hero-links-left">
+        <a href="pages/kresba.html">KRESBA</a>
+        <a href="pages/malba.html">MALBA</a>
+        <a href="pages/ilustrace.html">ILUSTRACE</a>
+    </div>
 
+    <div class="hero-model" id="model">
+        <!-- Blender / Three.js výstup se vykreslí sem -->
+    </div>
 
-<div class="hero-model" id="model">
-<!-- Blender / Three.js výstup se vykreslí sem -->
-</div>
-
-<div class="hero-links-right">
-<a href="pages/grafika.html">GRAFIKA</a>
-<a href="pages/3d.html">3D</a>
-<a href="pages/kontakt.html">KONTAKT</a>
-</div>
+    <div class="hero-links-right">
+        <a href="pages/grafika.html">GRAFIKA</a>
+        <a href="pages/3d.html">3D</a>
+        <a href="pages/kontakt.html">KONTAKT</a>
+    </div>
 </section>
 
-<!-- Načtení vašeho JavaScriptu -->
+<!-- Načtení vašeho JavaScriptu jako modulu -->
 <script type="module" src="js/modul_test.js"></script>
 
 </body>
