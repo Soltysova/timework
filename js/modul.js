@@ -1,74 +1,84 @@
-// JavaScript Document
+// js/modul.js
+
 import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'; // 
+import { GLTFLoader } from 'https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
 
-console.log("modul.js se načetl");
-
+console.log('modul.js se načetl');
 
 const container = document.getElementById('model');
+const isMobile = window.innerWidth < 768;
 
 /* ================= MOBILE FALLBACK ================= */
 
-if (window.innerWidth < 768) {
+if (isMobile) {
   const img = document.createElement('img');
   img.src = 'img/model_static.png';
   img.alt = 'Sedící postava';
   img.style.width = '100%';
   img.style.height = '100%';
   img.style.objectFit = 'contain';
-
-container.appendChild(img); return; // DŮLEŽITÉ: tady se Three.js už nespustí
+  container.appendChild(img);
 }
 
-/* ================= THREE.JS SETUP ================= */
+/* ================= THREE.JS ================= */
 
-// SCÉNA
-const scene = new THREE.Scene();
+if (!isMobile) {
 
-// KAMERA
-const camera = new THREE.PerspectiveCamera(
-  35,
-  container.clientWidth / container.clientHeight,
-  0.1,
-  100
-);
-camera.position.set(0, 1.4, 3);
+  const scene = new THREE.Scene();
 
-// RENDERER
-const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-renderer.setSize(container.clientWidth, container.clientHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-container.appendChild(renderer.domElement);
+  const camera = new THREE.PerspectiveCamera(
+    35,
+    container.clientWidth / container.clientHeight,
+    0.1,
+    100
+  );
+  camera.position.set(0, 1.4, 3);
 
-// SVĚTLA
-scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+  const renderer = new THREE.WebGLRenderer({
+    alpha: true,
+    antialias: true
+  });
 
-const keyLight = new THREE.DirectionalLight(0xffffff, 0.6);
-keyLight.position.set(2, 4, 2);
-scene.add(keyLight);
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  container.appendChild(renderer.domElement);
 
-// MODEL
-let head;
+  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
 
-const loader = new GLTFLoader();
-loader.load('img/model.glb', (gltf) => {
-  const model = gltf.scene;
-  scene.add(model);
+  const keyLight = new THREE.DirectionalLight(0xffffff, 0.6);
+  keyLight.position.set(2, 4, 2);
+  scene.add(keyLight);
 
-  head = model.getObjectByName('Head'); // název z Blenderu
-});
+  let head = null;
 
-// KURZOR
-document.addEventListener('mousemove', (e) => {
-  if (!head) return;
+  const loader = new GLTFLoader();
+  loader.load(
+    'img/model.glb',
+    (gltf) => {
+      const model = gltf.scene;
+      scene.add(model);
+      head = model.getObjectByName('Head');
+    },
+    undefined,
+    (err) => console.error('Chyba při načítání modelu:', err)
+  );
 
-  const x = (e.clientX / window.innerWidth) * 2 - 1;
-  head.rotation.y = x * 0.4;
-});
+  document.addEventListener('mousemove', (e) => {
+    if (!head) return;
+    const x = (e.clientX / window.innerWidth) * 2 - 1;
+    head.rotation.y = x * 0.4;
+  });
 
-// RENDER LOOP
-function animate() {
-  requestAnimationFrame(animate);
-  renderer.render(scene, camera);
+  window.addEventListener('resize', () => {
+    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, container.clientHeight);
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+  }
+
+  animate();
 }
-animate();
