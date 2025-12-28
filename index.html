@@ -13,6 +13,16 @@ Jakékoliv kopírování, úpravy nebo další šíření bez souhlasu autora js
 <title>Portfolio – Úvod</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+
+<!-- KLÍČOVÁ ČÁST: Import Map pro Three.js -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "unpkg.com",
+    "three/addons/": "unpkg.com"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -25,7 +35,7 @@ Jakékoliv kopírování, úpravy nebo další šíření bez souhlasu autora js
 
 
 <div class="hero-model" id="model">
-<!-- Blender / Three.js výstup -->
+<!-- Blender / Three.js výstup se vykreslí sem -->
 </div>
 
 <div class="hero-links-right">
@@ -34,7 +44,9 @@ Jakékoliv kopírování, úpravy nebo další šíření bez souhlasu autora js
 <a href="pages/kontakt.html">KONTAKT</a>
 </div>
 </section>
-<script type="module" src="js/modul.js"></script>
+
+<!-- Načtení vašeho JavaScriptu -->
+<script type="module" src="js/modul_test.js"></script>
 
 </body>
 </html>
