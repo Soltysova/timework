@@ -36,7 +36,7 @@ let model;
 
 const loader = new GLTFLoader();
 loader.load(
-  '../img/model.glb', // upravte cestu podle reality
+  './img/model.glb', // upravte cestu podle reality
   (gltf) => {
     model = gltf.scene;
     model.scale.set(1.2, 1.2, 1.2);
