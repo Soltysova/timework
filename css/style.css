@@ -99,6 +99,7 @@ nav a:hover {
 .hero-model {
   width: 360px;
   height: 480px;
+  overflow: hidden;
 }
 
 .hero-links-left,
