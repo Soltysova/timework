@@ -1,5 +1,5 @@
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import * as THREE from 'unpkg.com';
+import { GLTFLoader } from 'unpkg.com';
 
 const container = document.getElementById('model');
 
