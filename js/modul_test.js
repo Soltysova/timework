@@ -10,9 +10,10 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
   45,
   container.clientWidth / container.clientHeight,
-  0.01,
-  1000
+  0.1,
+  100
 );
+camera.position.set(0, 0, 4);
 
 /* RENDERER */
 const renderer = new THREE.WebGLRenderer({
@@ -24,46 +25,52 @@ renderer.setPixelRatio(window.devicePixelRatio);
 container.appendChild(renderer.domElement);
 
 /* SVĚTLA */
-scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+scene.add(new THREE.AmbientLight(0xffffff, 0.8));
 
 const light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(5, 10, 7);
+light.position.set(5, 5, 5);
 scene.add(light);
-
-/* DEBUG – můžete zakomentovat */
-// scene.add(new THREE.AxesHelper(2));
-// scene.add(new THREE.GridHelper(10, 10));
 
 /* MODEL */
 let model;
 
 const loader = new GLTFLoader();
-loader.load('/img/model.glb', (gltf) => {
+loader.load(
+  '/img/model.glb', // upravte cestu podle reality
+  (gltf) => {
+    model = gltf.scene;
+    model.scale.set(1.2, 1.2, 1.2);
+    scene.add(model);
+  }
+);
 
-  model = gltf.scene;
-  scene.add(model);
+/* INTERAKCE MYŠI */
+let mouseX = 0;
+let mouseY = 0;
 
-  // DEBUG: pomocné objekty
-  scene.add(new THREE.AxesHelper(5));
-
-  // 1) tvrdé nastavení pozice a měřítka
-  model.position.set(0, 0, 0);
-  model.scale.set(1, 1, 1);
-
-  // 2) box + info
-  const box = new THREE.Box3().setFromObject(model);
-  const size = box.getSize(new THREE.Vector3());
-  const center = box.getCenter(new THREE.Vector3());
-
-  console.log('SIZE:', size);
-  console.log('CENTER:', center);
-
-  // 3) extrémně konzervativní kamera
-  camera.position.set(0, 0, 10);
-  camera.near = 0.001;
-  camera.far = 10000;
-  camera.lookAt(0, 0, 0);
-  camera.updateProjectionMatrix();
-
+document.addEventListener('mousemove', (e) => {
+  const rect = container.getBoundingClientRect();
+  mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+  mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
 });
 
+/* ANIMACE */
+function animate() {
+  requestAnimationFrame(animate);
+
+  if (model) {
+    model.rotation.y += (mouseX * 0.5 - model.rotation.y) * 0.05;
+    model.rotation.x += (-mouseY * 0.5 - model.rotation.x) * 0.05;
+  }
+
+  renderer.render(scene, camera);
+}
+
+animate();
+
+/* RESIZE */
+window.addEventListener('resize', () => {
+  camera.aspect = container.clientWidth / container.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(container.clientWidth, container.clientHeight);
+});
