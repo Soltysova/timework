@@ -40,7 +40,7 @@ loader.load(
   (gltf) => {
     const model = gltf.scene;
 
-    // Centrování modelu (problém s "mimo box" by měl být vyřešen zde)
+    // Centrování modelu
     const box = new THREE.Box3().setFromObject(model);
     const center = box.getCenter(new THREE.Vector3());
     model.position.sub(center);
@@ -61,28 +61,26 @@ loader.load(
       }
     };
 
-    // NASTAVENÍ POZICE RUKOU (Používáme TVOJE názvy kostí)
-    // Ruce u těla (rotace 0 zajistí, že paže visí dolů podél osy Y)
+    // NASTAVENÍ POZICE RUKOU (Používáme TVOJE názvy kostí a nové rotace)
     
-    // Pravá ruka
-    setRot('rrameno', 0);
-    setRot('rruka', 0); // Předloktí narovnané
-    setRot('rloket', 0); // Není standardní kost, ale pro jistotu
+    // Pravá ruka: Mírná rotace kolem Z osy vtáhne paži k tělu.
+    setRot('rrameno', 0, 0, -0.2);
+    setRot('rruka', 0); // Předloktí narovnané podél paže
+    // Ostatní kosti na nule nebo mírně pokrčené pro přirozenost
+    setRot('rloket', 0); 
     setRot('rzapesti', 0);
     setRot('rdlan', 0);
 
-    // Levá ruka
-    setRot('lrameno', 0);
+    // Levá ruka: Mírná rotace kolem Z osy vtáhne paži k tělu (opačný směr)
+    setRot('lrameno', 0, 0, 0.2);
     setRot('lruka', 0);
     setRot('lloket', 0);
     setRot('lzapesti', 0);
     setRot('ldlan', 0);
 
-    // Prsty (obecný název 'rprst', 'lprst' je méně přesný, 
-    // předpokládám, že pro všechny prsty stačí 0 nebo mírné pokrčení)
+    // Prsty (obecný název 'rprst', 'lprst')
     setRot('rprst', 0.2); 
     setRot('lprst', 0.2);
-
 
     if (!head) console.warn('Kost "hlava" nebyla nalezena');
   },
