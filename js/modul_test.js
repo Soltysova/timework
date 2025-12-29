@@ -45,13 +45,14 @@ loader.load(
     const center = box.getCenter(new THREE.Vector3());
     model.position.sub(center);
 
+    // POSUNUTÍ MODELU VLEVO
+    model.position.x = -1.5; 
+
     model.scale.set(1.5, 1.5, 1.5);
     scene.add(model);
 
-    // Najdi kost hlavy
     head = model.getObjectByName('hlava');
 
-    // Pomocná funkce pro rotaci
     const setRot = (name, x, y = 0, z = 0) => {
       const obj = model.getObjectByName(name);
       if (obj) {
@@ -61,24 +62,19 @@ loader.load(
       }
     };
 
-    // NASTAVENÍ POZICE RUKOU (Používáme TVOJE názvy kostí a nové rotace)
-    
-    // Pravá ruka: Mírná rotace kolem Z osy vtáhne paži k tělu.
+    // NASTAVENÍ POZICE RUKOU 
     setRot('rrameno', 0, 0, -0.2);
-    setRot('rruka', 0); // Předloktí narovnané podél paže
-    // Ostatní kosti na nule nebo mírně pokrčené pro přirozenost
+    setRot('rruka', 0); 
     setRot('rloket', 0); 
     setRot('rzapesti', 0);
     setRot('rdlan', 0);
 
-    // Levá ruka: Mírná rotace kolem Z osy vtáhne paži k tělu (opačný směr)
     setRot('lrameno', 0, 0, 0.2);
     setRot('lruka', 0);
     setRot('lloket', 0);
     setRot('lzapesti', 0);
     setRot('ldlan', 0);
 
-    // Prsty (obecný název 'rprst', 'lprst')
     setRot('rprst', 0.2); 
     setRot('lprst', 0.2);
 
@@ -104,7 +100,6 @@ window.addEventListener('mousemove', (e) => {
 function animate() {
   requestAnimationFrame(animate);
 
-  // Otáčení pouze hlavy
   if (head) {
     raycaster.setFromCamera(mouse, camera);
     raycaster.ray.intersectPlane(plane, intersection);
