@@ -35,7 +35,7 @@ scene.add(light);
 let model;
 const loader = new GLTFLoader();
 loader.load(
-  'img/model.glb', // Zkontrolujte, zda nemáte na začátku lomítko navíc
+  'img/robot.glb', // Zkontrolujte, zda nemáte na začátku lomítko navíc
   (gltf) => {
     model = gltf.scene;
 
