@@ -46,8 +46,9 @@ loader.load(
     model.position.sub(center);
     // -------------------------
     
-    // POSUNUTÍ MODELU DOLEVA (menší hodnota, aby byl celý vidět)
-    model.position.x = -1.0;
+    // POSUNUTÍ MODELU DOLEVA A DOLŮ
+    model.position.x = -1.2;
+    model.position.y = -0.5; 
 
     model.scale.set(1.5, 1.5, 1.5);
     scene.add(model);
@@ -63,18 +64,19 @@ loader.load(
       }
     };
 
-    // NASTAVENÍ POZICE RUKOU DOLŮ A K TĚLU
-    const angleDown = Math.PI * 0.45; // Mírně méně než 90 stupňů
-    
+    // NASTAVENÍ POZICE RUKOU DOLŮ A K TĚLU (Jinak než 90 st., zkoušíme menší úhel a rotaci dovnitř)
+    const angleDown = Math.PI * 0.45; 
+    const angleIn = Math.PI * 0.05; // Mírně dovnitř (cca 9 stupňů)
+
     // Pravá ruka
-    setRot('rrameno', angleDown, 0, -0.1); // Rotace dolů a mírně dovnitř
+    setRot('rrameno', angleDown, angleIn, 0); 
     setRot('rruka', 0); 
     setRot('rloket', 0); 
     setRot('rzapesti', 0);
     setRot('rdlan', 0);
 
     // Levá ruka
-    setRot('lrameno', angleDown, 0, 0.1); // Rotace dolů a mírně dovnitř
+    setRot('lrameno', angleDown, -angleIn, 0); // Zrcadlově dovnitř
     setRot('lruka', 0);
     setRot('lloket', 0);
     setRot('lzapesti', 0);
