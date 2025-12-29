@@ -13,7 +13,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 );
-camera.position.set(0, 0, 5);
+camera.position.set(0, 0, 5); // Mírně dál pro jistotu
 
 /* RENDERER */
 const renderer = new THREE.WebGLRenderer({
@@ -25,14 +25,14 @@ renderer.setPixelRatio(window.devicePixelRatio);
 container.appendChild(renderer.domElement);
 
 /* SVĚTLA */
-scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+scene.add(new THREE.AmbientLight(0xffffff, 1.2)); // Zvýšená intenzita
 
 const light = new THREE.DirectionalLight(0xffffff, 1.5);
 light.position.set(5, 5, 5);
 scene.add(light);
 
 /* MODEL */
-let head; 
+let head;
 
 const loader = new GLTFLoader();
 loader.load(
@@ -40,39 +40,42 @@ loader.load(
   (gltf) => {
     const model = gltf.scene;
 
-    // Centrování modelu
+    // --- CENTROVÁNÍ MODELU DLE TVÉHO FUNKČNÍHO KÓDU ---
     const box = new THREE.Box3().setFromObject(model);
     const center = box.getCenter(new THREE.Vector3());
-    model.position.sub(center);
-
-    // model.position.x = -1.5; // Odstraněno pro vycentrování
+    model.position.x += (model.position.x - center.x);
+    model.position.y += (model.position.y - center.y);
+    model.position.z += (model.position.z - center.z);
+    // ------------------------------------------------
 
     model.scale.set(1.5, 1.5, 1.5);
     scene.add(model);
 
+    // Najdi kost hlavy
     head = model.getObjectByName('hlava');
 
+    // Pomocná funkce pro rotaci
     const setRot = (name, x, y = 0, z = 0) => {
       const obj = model.getObjectByName(name);
       if (obj) {
+        // Používáme specifické osy pro správnou orientaci dolů pro tvůj model
         obj.rotation.x = x;
         obj.rotation.y = y;
         obj.rotation.z = z;
       }
     };
 
-    // NASTAVENÍ POZICE RUKOU (Nové rotace)
-    // Otáčíme kolem X osy o 90 stupňů, aby směřovaly dolů
+    // NASTAVENÍ POZICE RUKOU (Snad už konečně správně připaženo)
     
     // Pravá ruka
-    setRot('rrameno', Math.PI / 2); // 90 stupňů dolů
-    setRot('rruka', 0); // Předloktí rovně
+    setRot('rrameno', 0); // Zpět na 0 nebo blízko 0 pro základní rotaci
+    setRot('rruka', 0); 
     setRot('rloket', 0); 
     setRot('rzapesti', 0);
     setRot('rdlan', 0);
 
     // Levá ruka
-    setRot('lrameno', Math.PI / 2); // 90 stupňů dolů
+    setRot('lrameno', 0);
     setRot('lruka', 0);
     setRot('lloket', 0);
     setRot('lzapesti', 0);
@@ -84,7 +87,7 @@ loader.load(
     if (!head) console.warn('Kost "hlava" nebyla nalezena');
   },
   undefined,
-  (err) => console.error(err)
+  (error) => console.error("Chyba načítání:", error)
 );
 
 /* INTERAKCE MYŠI */
@@ -103,6 +106,7 @@ window.addEventListener('mousemove', (e) => {
 function animate() {
   requestAnimationFrame(animate);
 
+  // POUZE otáčení hlavy (přesměrováno z tvého posledního kódu, který otáčel celým modelem)
   if (head) {
     raycaster.setFromCamera(mouse, camera);
     raycaster.ray.intersectPlane(plane, intersection);
@@ -121,11 +125,12 @@ function animate() {
 
 animate();
 
-/* RESIZE */
+/* RESIZE FIX */
 window.addEventListener('resize', () => {
-  const w = container.clientWidth;
-  const h = container.clientHeight;
-  camera.aspect = w / h;
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+  
+  camera.aspect = width / height;
   camera.updateProjectionMatrix();
-  renderer.setSize(w, h);
+  renderer.setSize(width, height);
 });
