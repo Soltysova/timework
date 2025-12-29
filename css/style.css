@@ -93,7 +93,8 @@ nav a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 120px);
+  min-height: calc(100vh - 120px);
+  padding: 40px 0;
   position: relative;
 }
 
@@ -101,6 +102,17 @@ nav a:hover {
   width: 360px;
   height: 480px;
   overflow: hidden;
+  position: relative; /* Zásadní pro správné souřadnice getBoundingClientRect */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-model canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .hero-links-left,
