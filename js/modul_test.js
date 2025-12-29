@@ -40,7 +40,7 @@ loader.load(
   (gltf) => {
     const model = gltf.scene;
 
-    // 1. Centrování modelu v boxu
+    // Centrování modelu (problém s "mimo box" by měl být vyřešen zde)
     const box = new THREE.Box3().setFromObject(model);
     const center = box.getCenter(new THREE.Vector3());
     model.position.sub(center);
@@ -48,59 +48,41 @@ loader.load(
     model.scale.set(1.5, 1.5, 1.5);
     scene.add(model);
 
-    // 2. Najdi kost hlavy (název "hlava" dle tvého zadání)
+    // Najdi kost hlavy
     head = model.getObjectByName('hlava');
 
     // Pomocná funkce pro rotaci
-    const setRot = (name, x, z = 0) => {
+    const setRot = (name, x, y = 0, z = 0) => {
       const obj = model.getObjectByName(name);
       if (obj) {
         obj.rotation.x = x;
+        obj.rotation.y = y;
         obj.rotation.z = z;
       }
     };
 
-    // 3. RUCE U TĚLA (nastavení rotací na 0 zajistí, že paže visí dolů)
-    // Pravá ruka
-    setRot('RightArm_51', 0);
-    setRot('RightForeArm_50', 0);
+    // NASTAVENÍ POZICE RUKOU (Používáme TVOJE názvy kostí)
+    // Ruce u těla (rotace 0 zajistí, že paže visí dolů podél osy Y)
     
+    // Pravá ruka
+    setRot('rrameno', 0);
+    setRot('rruka', 0); // Předloktí narovnané
+    setRot('rloket', 0); // Není standardní kost, ale pro jistotu
+    setRot('rzapesti', 0);
+    setRot('rdlan', 0);
+
     // Levá ruka
-    setRot('LeftArm_27', 0);
-    setRot('LeftForeArm_26', 0);
+    setRot('lrameno', 0);
+    setRot('lruka', 0);
+    setRot('lloket', 0);
+    setRot('lzapesti', 0);
+    setRot('ldlan', 0);
 
-    // Prsty (ponechány v přirozené, lehce pokrčené poloze)
-    setRot('RightHandThumb1_32', -0.2);
-    setRot('RightHandThumb2_31', 0.3);
-    setRot('RightHandThumb3_30', 0.3);
-    setRot('RightHandIndex1_36', 0.2);
-    setRot('RightHandIndex2_35', 0.3);
-    setRot('RightHandIndex3_34', 0.3);
-    setRot('RightHandMiddle1_40', 0.2);
-    setRot('RightHandMiddle2_39', 0.3);
-    setRot('RightHandMiddle3_38', 0.3);
-    setRot('RightHandRing1_44', 0.2);
-    setRot('RightHandRing2_43', 0.3);
-    setRot('RightHandRing3_42', 0.3);
-    setRot('RightHandPinky1_48', 0.2);
-    setRot('RightHandPinky2_47', 0.3);
-    setRot('RightHandPinky3_46', 0.3);
+    // Prsty (obecný název 'rprst', 'lprst' je méně přesný, 
+    // předpokládám, že pro všechny prsty stačí 0 nebo mírné pokrčení)
+    setRot('rprst', 0.2); 
+    setRot('lprst', 0.2);
 
-    setRot('LeftHandThumb1_8', -0.2, 0.5);
-    setRot('LeftHandThumb2_7', 0.3);
-    setRot('LeftHandThumb3_6', 0.3);
-    setRot('LeftHandIndex1_12', 0.2);
-    setRot('LeftHandIndex2_11', 0.3);
-    setRot('LeftHandIndex3_10', 0.3);
-    setRot('LeftHandMiddle1_16', 0.2);
-    setRot('LeftHandMiddle2_15', 0.3);
-    setRot('LeftHandMiddle3_14', 0.3);
-    setRot('LeftHandRing1_20', 0.2);
-    setRot('LeftHandRing2_19', 0.3);
-    setRot('LeftHandRing3_18', 0.3);
-    setRot('LeftHandPinky1_24', 0.2);
-    setRot('LeftHandPinky2_23', 0.3);
-    setRot('LeftHandPinky3_22', 0.3);
 
     if (!head) console.warn('Kost "hlava" nebyla nalezena');
   },
