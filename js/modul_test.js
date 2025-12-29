@@ -45,8 +45,7 @@ loader.load(
     const center = box.getCenter(new THREE.Vector3());
     model.position.sub(center);
 
-    // POSUNUTÍ MODELU VLEVO
-    model.position.x = -1.5; 
+    // model.position.x = -1.5; // Odstraněno pro vycentrování
 
     model.scale.set(1.5, 1.5, 1.5);
     scene.add(model);
@@ -62,14 +61,18 @@ loader.load(
       }
     };
 
-    // NASTAVENÍ POZICE RUKOU 
-    setRot('rrameno', 0, 0, -0.2);
-    setRot('rruka', 0); 
+    // NASTAVENÍ POZICE RUKOU (Nové rotace)
+    // Otáčíme kolem X osy o 90 stupňů, aby směřovaly dolů
+    
+    // Pravá ruka
+    setRot('rrameno', Math.PI / 2); // 90 stupňů dolů
+    setRot('rruka', 0); // Předloktí rovně
     setRot('rloket', 0); 
     setRot('rzapesti', 0);
     setRot('rdlan', 0);
 
-    setRot('lrameno', 0, 0, 0.2);
+    // Levá ruka
+    setRot('lrameno', Math.PI / 2); // 90 stupňů dolů
     setRot('lruka', 0);
     setRot('lloket', 0);
     setRot('lzapesti', 0);
