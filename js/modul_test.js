@@ -45,6 +45,9 @@ loader.load(
     const center = box.getCenter(new THREE.Vector3());
     model.position.sub(center);
     // -------------------------
+    
+    // POSUNUTÍ MODELU DOLEVA
+    model.position.x = -1.5;
 
     model.scale.set(1.5, 1.5, 1.5);
     scene.add(model);
@@ -63,14 +66,12 @@ loader.load(
     // NASTAVENÍ POZICE RUKOU DOLŮ
     const angleDown = Math.PI / 2; // 90 stupňů
     
-    // Pravá ruka
     setRot('rrameno', angleDown); 
     setRot('rruka', 0); 
     setRot('rloket', 0); 
     setRot('rzapesti', 0);
     setRot('rdlan', 0);
 
-    // Levá ruka
     setRot('lrameno', angleDown); 
     setRot('lruka', 0);
     setRot('lloket', 0);
@@ -89,7 +90,6 @@ loader.load(
 /* INTERAKCE MYŠI */
 const mouse = new THREE.Vector2();
 const raycaster = new THREE.Raycaster();
-// OPRAVA: Správná inicializace THREE.Plane
 const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -2);
 const intersection = new THREE.Vector3();
 
