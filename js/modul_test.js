@@ -40,11 +40,11 @@ loader.load(
   (gltf) => {
     const model = gltf.scene;
 
-    // --- CENTROVÁNÍ MODELU STANDARDNÍ METODOU ---
+    // --- CENTROVÁNÍ MODELU ---
     const box = new THREE.Box3().setFromObject(model);
     const center = box.getCenter(new THREE.Vector3());
     model.position.sub(center);
-    // ------------------------------------------
+    // -------------------------
 
     model.scale.set(1.5, 1.5, 1.5);
     scene.add(model);
@@ -60,14 +60,18 @@ loader.load(
       }
     };
 
-    // NASTAVENÍ POZICE RUKOU (Snad už správně dolů)
-    setRot('rrameno', Math.PI / 2); // 90 stupňů dolů
+    // NASTAVENÍ POZICE RUKOU DOLŮ
+    const angleDown = Math.PI / 2; // 90 stupňů
+    
+    // Pravá ruka
+    setRot('rrameno', angleDown); 
     setRot('rruka', 0); 
     setRot('rloket', 0); 
     setRot('rzapesti', 0);
     setRot('rdlan', 0);
 
-    setRot('lrameno', Math.PI / 2); // 90 stupňů dolů
+    // Levá ruka
+    setRot('lrameno', angleDown); 
     setRot('lruka', 0);
     setRot('lloket', 0);
     setRot('lzapesti', 0);
@@ -85,7 +89,8 @@ loader.load(
 /* INTERAKCE MYŠI */
 const mouse = new THREE.Vector2();
 const raycaster = new THREE.Raycaster();
-const plane = new THREE.Plane(new THREE.Plane(new THREE.Vector3(0, 0, 1), -2));
+// OPRAVA: Správná inicializace THREE.Plane
+const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -2);
 const intersection = new THREE.Vector3();
 
 window.addEventListener('mousemove', (e) => {
