@@ -1,76 +1,106 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-// 1. Nastavení rendereru
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-renderer.setClearColor(0xffffff);
+const container = document.getElementById('model');
 
-// 2. Scéna a kamera
+/* SCÉNA */
 const scene = new THREE.Scene();
+
+/* KAMERA */
 const camera = new THREE.PerspectiveCamera(
   45,
-  window.innerWidth / window.innerHeight,
+  container.clientWidth / container.clientHeight,
   0.1,
-  1000
+  100
 );
-camera.position.set(0, 1, 2.5);
-camera.lookAt(scene.position);
+camera.position.set(0, 0, 5);
 
-// 3. Osvětlení
-const light = new THREE.DirectionalLight(0xffffff, 10);
-light.position.set(0, 20, 20);
+/* RENDERER */
+const renderer = new THREE.WebGLRenderer({
+  alpha: true,
+  antialias: true
+});
+renderer.setSize(container.clientWidth, container.clientHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+container.appendChild(renderer.domElement);
+
+/* SVĚTLA */
+scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+
+const light = new THREE.DirectionalLight(0xffffff, 1.5);
+light.position.set(5, 5, 5);
 scene.add(light);
 
-const aLight = new THREE.AmbientLight(0xffffff, 1);
-scene.add(aLight);
+/* MODEL */
+let model;
+let head; // kost hlavy
 
-// 4. Proměnné pro sledování myši a kost hlavy
-let head; // Sedmá proměnná pro kost hlavy
-const intersectionPoint = new THREE.Vector3();
-const planeNormal = new THREE.Vector3();
-const plane = new THREE.Plane();
-const mousePosition = new THREE.Vector2();
-const raycaster = new THREE.Raycaster();
-
-// 5. Načtení modelu (pouze jednou!)
 const loader = new GLTFLoader();
-loader.load('/img/robot.glb', function (glb) {
-  const model = glb.scene;
-  scene.add(model);
-  model.position.y -= 1;
+loader.load(
+  'img/robot.glb',
+  (gltf) => {
+    model = gltf.scene;
 
-  // Přiřazení kosti hlavy podle jména v modelu
-  head = model.getObjectByName('hlava');
+    // centrování modelu
+    const box = new THREE.Box3().setFromObject(model);
+    const center = box.getCenter(new THREE.Vector3());
+    model.position.sub(center);
+
+    model.scale.set(1.5, 1.5, 1.5);
+    scene.add(model);
+
+    // NAJDI KOST HLAVY (název musí odpovídat glTF)
+    head = model.getObjectByName('hlava');
+    if (!head) {
+      console.warn('Kost "hlava" nebyla nalezena');
+    }
+  },
+  undefined,
+  (err) => console.error(err)
+);
+
+/* INTERAKCE MYŠI */
+const mouse = new THREE.Vector2();
+const raycaster = new THREE.Raycaster();
+const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -2);
+const intersection = new THREE.Vector3();
+
+window.addEventListener('mousemove', (e) => {
+  const rect = container.getBoundingClientRect();
+
+  mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
 });
 
-// 6. Logika pohybu myši
-window.addEventListener('mousemove', function (e) {
-  mousePosition.x = (e.clientX / window.innerWidth) * 2 - 1;
-  mousePosition.y = -(e.clientY / window.innerHeight) * 2 + 1;
+/* ANIMACE */
+function animate() {
+  requestAnimationFrame(animate);
 
-  planeNormal.copy(camera.position).normalize();
-  plane.setFromNormalAndCoplanarPoint(planeNormal, scene.position);
-  
-  raycaster.setFromCamera(mousePosition, camera);
-  raycaster.ray.intersectPlane(plane, intersectionPoint);
-
-  // Otáčení hlavy směrem k průsečíku s fixní Z hloubkou (hodnota 2)
   if (head) {
-    head.lookAt(intersectionPoint.x, intersectionPoint.y, 2);
-  }
-});
+    raycaster.setFromCamera(mouse, camera);
+    raycaster.ray.intersectPlane(plane, intersection);
 
-// 7. Animační smyčka
-function animate(time) {
+    // plynulé otáčení hlavy
+    const target = new THREE.Vector3(
+      intersection.x,
+      intersection.y,
+      head.getWorldPosition(new THREE.Vector3()).z
+    );
+
+    head.lookAt(target);
+  }
+
   renderer.render(scene, camera);
 }
-renderer.setAnimationLoop(animate);
 
-// 8. Responzivita okna
-window.addEventListener('resize', function () {
-  camera.aspect = window.innerWidth / window.innerHeight;
+animate();
+
+/* RESIZE */
+window.addEventListener('resize', () => {
+  const w = container.clientWidth;
+  const h = container.clientHeight;
+
+  camera.aspect = w / h;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(w, h);
 });
