@@ -1,147 +1,88 @@
-// ================= IMPORTY =================
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-// ================= KONTEJNER =================
+// 1. Nastavení scény, kamery a rendereru
 const container = document.getElementById('model');
-if (!container) {
-    console.error('Nenalezen kontejner #model');
-}
-
-// ================= ROBOT REFERENCE =================
-let robot = {
-    leva: { ruka: null, loket: null, zapesti: null, dlan: null },
-    prava: { ruka: null, loket: null, zapesti: null, dlan: null },
-    hlava: null,
-    krk: null
-};
-
-// ================= MYŠ =================
-let mouseX = 0;
-let mouseY = 0;
-
-// ================= SCÉNA =================
 const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 
-// ================= VELIKOSTI =================
-const getSize = () => ({
-    width: container.clientWidth,
-    height: container.clientHeight
-});
-
-let { width, height } = getSize();
-
-// ================= KAMERA =================
-const camera = new THREE.PerspectiveCamera(
-    45,
-    width / height,
-    0.1,
-    100
-);
-camera.position.set(0, 1.4, 3.2);
-
-// ================= RENDERER =================
-const renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    alpha: true
-});
-renderer.setSize(width, height);
+renderer.setSize(container.clientWidth, container.clientHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 container.appendChild(renderer.domElement);
 
-// ================= SVĚTLA =================
-scene.add(new THREE.AmbientLight(0xffffff, 1.1));
+// 2. Osvětlení
+const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+scene.add(ambientLight);
 
-const dirLight = new THREE.DirectionalLight(0xffffff, 1.8);
-dirLight.position.set(5, 10, 7);
-scene.add(dirLight);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+directionalLight.position.set(5, 5, 5);
+scene.add(directionalLight);
 
-// ================= POHYB MYŠI – VARIANTA A =================
-window.addEventListener('mousemove', (event) => {
-    const rect = container.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
+// Proměnné pro interakci
+let headBone = null;
+let mouseX = 0;
+let mouseY = 0;
 
-    mouseX = (event.clientX - centerX) / (rect.width / 2);
-    mouseY = -(event.clientY - centerY) / (rect.height / 2);
-
-    mouseX = THREE.MathUtils.clamp(mouseX, -1, 1);
-    mouseY = THREE.MathUtils.clamp(mouseY, -1, 1);
-});
-
-// ================= NAČTENÍ MODELU =================
+// 3. Načtení modelu
 const loader = new GLTFLoader();
-
 loader.load(
-    './img/robot-kostra.glb',
+    'img/robot-kostra.glb', 
     (gltf) => {
         const model = gltf.scene;
+
+        // Prohledání kostí a nalezení hlavy
+        model.traverse((object) => {
+            if (object.isBone && object.name === 'hlava') {
+                headBone = object;
+                // Nastavení pořadí rotací pro stabilitu (vlevo-vpravo vs nahoru-dolů)
+                headBone.rotation.order = 'YXZ'; 
+            }
+        });
+        
+        // Základní transformace modelu (čelem k nám)
+        model.rotation.y = Math.PI; 
+        model.scale.set(1.1, 1.1, 1.1);
+        model.position.y = -1;
+
         scene.add(model);
-
-        // --- MAPOVÁNÍ ---
-        robot.leva.ruka    = model.getObjectByName('lruka');
-        robot.leva.loket   = model.getObjectByName('lloket');
-        robot.leva.zapesti = model.getObjectByName('lzapesti');
-        robot.leva.dlan    = model.getObjectByName('ldlan');
-
-        robot.prava.ruka    = model.getObjectByName('rruka');
-        robot.prava.loket   = model.getObjectByName('rloket');
-        robot.prava.zapesti = model.getObjectByName('rzapesti');
-        robot.prava.dlan    = model.getObjectByName('rdlan');
-
-        robot.hlava = model.getObjectByName('hlava');
-        robot.krk   = model.getObjectByName('krk');
-
-        // --- CENTROVÁNÍ MODELU ---
-        const box = new THREE.Box3().setFromObject(model);
-        const center = box.getCenter(new THREE.Vector3());
-        const size = box.getSize(new THREE.Vector3());
-
-        model.position.sub(center);
-
-        // ✅ JEMNÝ OFFSET PRO HERO LAYOUT
-        model.position.x -= size.x * 0.12; // doleva
-        model.position.y += size.y * 0.08; // nahoru
-
-        const maxDim = Math.max(size.x, size.y, size.z);
-        camera.position.z = maxDim * 1.6;
-
-        console.log('Robot úspěšně načten');
+        console.log("Model načten v základní T-pozici.");
     },
     undefined,
-    (error) => {
-        console.error('Chyba při načítání modelu:', error);
-    }
+    (error) => console.error('Chyba při načítání:', error)
 );
 
-// ================= RESIZE =================
-window.addEventListener('resize', () => {
-    ({ width, height } = getSize());
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-    renderer.setSize(width, height);
+camera.position.z = 4;
+
+// Sledování pohybu myši
+window.addEventListener('mousemove', (event) => {
+    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+    mouseY = (event.clientY / window.innerHeight) * 2 - 1;
 });
 
-// ================= ANIMACE =================
+// 4. Animační smyčka
 function animate() {
     requestAnimationFrame(animate);
 
-    if (robot.hlava) {
-        const headMaxY = 0.6;
-        const headMaxX = 0.35;
+    if (headBone) {
+        // Horizontální rotace (Osa Y)
+        const targetRY = mouseX * 1.2;
+        headBone.rotation.y += (targetRY - headBone.rotation.y) * 0.1;
 
-        const targetY = THREE.MathUtils.clamp(mouseX * 0.8, -headMaxY, headMaxY);
-        const targetX = THREE.MathUtils.clamp(-mouseY * 0.5, -headMaxX, headMaxX);
-
-        robot.hlava.rotation.y += (targetY - robot.hlava.rotation.y) * 0.08;
-        robot.hlava.rotation.x += (targetX - robot.hlava.rotation.x) * 0.08;
-
-        if (robot.krk) {
-            robot.krk.rotation.y += (targetY * 0.4 - robot.krk.rotation.y) * 0.08;
-        }
+        // Vertikální rotace (Osa Z - dle tvého předchozího zjištění)
+        const targetRZ = -mouseY * 0.8;
+        headBone.rotation.z += (targetRZ - headBone.rotation.z) * 0.1;
     }
 
     renderer.render(scene, camera);
 }
+
+// 5. Přizpůsobení při změně velikosti okna
+window.addEventListener('resize', () => {
+    if (!container) return;
+    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, container.clientHeight);
+});
 
 animate();
