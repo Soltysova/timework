@@ -1,7 +1,6 @@
 // ================= IMPORTY =================
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 // ================= KONTEJNER =================
 const container = document.getElementById('model');
@@ -30,7 +29,7 @@ const getSize = () => ({
     height: container.clientHeight
 });
 
-const { width, height } = getSize();
+let { width, height } = getSize();
 
 // ================= KAMERA =================
 const camera = new THREE.PerspectiveCamera(
@@ -57,17 +56,19 @@ const dirLight = new THREE.DirectionalLight(0xffffff, 1.8);
 dirLight.position.set(5, 10, 7);
 scene.add(dirLight);
 
-// ================= CONTROLS =================
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.enableZoom = false;
-controls.enablePan = false;
-
-// ================= MYŠ NAD MODELEM =================
-container.addEventListener('mousemove', (event) => {
+// ================= POHYB MYŠI – VARIANTA A =================
+// hlava reaguje na kurzor kdekoliv na stránce,
+// ale výpočet je vztažený ke středu robota
+window.addEventListener('mousemove', (event) => {
     const rect = container.getBoundingClientRect();
-    mouseX = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    mouseY = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    mouseX = (event.clientX - centerX) / (rect.width / 2);
+    mouseY = -(event.clientY - centerY) / (rect.height / 2);
+
+    mouseX = THREE.MathUtils.clamp(mouseX, -1, 1);
+    mouseY = THREE.MathUtils.clamp(mouseY, -1, 1);
 });
 
 // ================= NAČTENÍ MODELU =================
@@ -103,9 +104,6 @@ loader.load(
         const maxDim = Math.max(size.x, size.y, size.z);
         camera.position.z = maxDim * 1.6;
 
-        controls.target.set(0, size.y * 0.45, 0);
-        controls.update();
-
         console.log('Robot úspěšně načten');
     },
     undefined,
@@ -116,7 +114,7 @@ loader.load(
 
 // ================= RESIZE =================
 window.addEventListener('resize', () => {
-    const { width, height } = getSize();
+    ({ width, height } = getSize());
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
     renderer.setSize(width, height);
@@ -127,18 +125,25 @@ function animate() {
     requestAnimationFrame(animate);
 
     if (robot.hlava) {
-        const targetY = mouseX * 0.8;
-        const targetX = -mouseY * 0.5;
 
-        robot.hlava.rotation.y += (targetY - robot.hlava.rotation.y) * 0.1;
-        robot.hlava.rotation.x += (targetX - robot.hlava.rotation.x) * 0.1;
+        // --- OMEZENÍ ROTACE (aby se nepřetáčel krk) ---
+        const headMaxY = 0.6;   // cca 35°
+        const headMaxX = 0.35;  // cca 20°
 
+        const targetY = THREE.MathUtils.clamp(mouseX * 0.8, -headMaxY, headMaxY);
+        const targetX = THREE.MathUtils.clamp(-mouseY * 0.5, -headMaxX, headMaxX);
+
+        // --- HLAVA ---
+        robot.hlava.rotation.y += (targetY - robot.hlava.rotation.y) * 0.08;
+        robot.hlava.rotation.x += (targetX - robot.hlava.rotation.x) * 0.08;
+
+        // --- KRK (menší rozsah než hlava) ---
         if (robot.krk) {
-            robot.krk.rotation.y += (targetY * 0.4 - robot.krk.rotation.y) * 0.1;
+            const neckTargetY = targetY * 0.4;
+            robot.krk.rotation.y += (neckTargetY - robot.krk.rotation.y) * 0.08;
         }
     }
 
-    controls.update();
     renderer.render(scene, camera);
 }
 
