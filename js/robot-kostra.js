@@ -57,8 +57,6 @@ dirLight.position.set(5, 10, 7);
 scene.add(dirLight);
 
 // ================= POHYB MYŠI – VARIANTA A =================
-// hlava reaguje na kurzor kdekoliv na stránce,
-// ale výpočet je vztažený ke středu robota
 window.addEventListener('mousemove', (event) => {
     const rect = container.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -101,6 +99,10 @@ loader.load(
 
         model.position.sub(center);
 
+        // ✅ JEMNÝ OFFSET PRO HERO LAYOUT
+        model.position.x -= size.x * 0.12; // doleva
+        model.position.y += size.y * 0.08; // nahoru
+
         const maxDim = Math.max(size.x, size.y, size.z);
         camera.position.z = maxDim * 1.6;
 
@@ -125,22 +127,17 @@ function animate() {
     requestAnimationFrame(animate);
 
     if (robot.hlava) {
-
-        // --- OMEZENÍ ROTACE (aby se nepřetáčel krk) ---
-        const headMaxY = 0.6;   // cca 35°
-        const headMaxX = 0.35;  // cca 20°
+        const headMaxY = 0.6;
+        const headMaxX = 0.35;
 
         const targetY = THREE.MathUtils.clamp(mouseX * 0.8, -headMaxY, headMaxY);
         const targetX = THREE.MathUtils.clamp(-mouseY * 0.5, -headMaxX, headMaxX);
 
-        // --- HLAVA ---
         robot.hlava.rotation.y += (targetY - robot.hlava.rotation.y) * 0.08;
         robot.hlava.rotation.x += (targetX - robot.hlava.rotation.x) * 0.08;
 
-        // --- KRK (menší rozsah než hlava) ---
         if (robot.krk) {
-            const neckTargetY = targetY * 0.4;
-            robot.krk.rotation.y += (neckTargetY - robot.krk.rotation.y) * 0.08;
+            robot.krk.rotation.y += (targetY * 0.4 - robot.krk.rotation.y) * 0.08;
         }
     }
 
