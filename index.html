@@ -30,7 +30,8 @@
         <span></span>
     </label>
 
-    <nav>
+    <!-- Toto je hlavní menu, na desktopu skryté, na mobilu viditelné -->
+    <nav class="main-nav">
         <a href="pages/kresba.html">KRESBA</a>
         <a href="pages/malba.html">MALBA</a>
         <a href="pages/ilustrace.html">ILUSTRACE</a>
@@ -40,7 +41,8 @@
     </nav>
 </header>
 
-<section class="hero">
+<main class="hero">
+    <!-- Tyto odkazy jsou viditelné POUZE na desktopu -->
     <div class="hero-links-left">
         <a href="pages/kresba.html">KRESBA</a>
         <a href="pages/malba.html">MALBA</a>
@@ -48,16 +50,16 @@
     </div>
 
     <div class="hero-model" id="model">
-        <!-- Statický obrázek pro mobily -->
         <img src="img/robot-barva.png" alt="Robot" class="mobile-fallback">
     </div>
 
+    <!-- Tyto odkazy jsou viditelné POUZE na desktopu -->
     <div class="hero-links-right">
         <a href="pages/grafika.html">GRAFIKA</a>
         <a href="pages/3d.html">3D</a>
         <a href="pages/kontakt.html">KONTAKT</a>
     </div>
-</section>
+</main>
 
 <script type="module" src="js/robot-kostra.js"></script>
 

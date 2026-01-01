@@ -1,3 +1,5 @@
+/* ... ponechte své root a základní styly stejné ... */
+
 :root {
   --bg: #F9CBC7;
   --text: #734C3F;
@@ -20,7 +22,7 @@ body {
 header {
   padding: 20px 40px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Zajistí logo vlevo a menu/ikony vpravo */
   align-items: center;
   position: absolute;
   top: 0;
@@ -30,18 +32,18 @@ header {
 
 .logo { width: 32px; }
 
-/* Na počítači horní menu schováme, máte ho po stranách robota */
+/* Na počítači boční odkazy fungují, takže horní menu schováme */
 .main-nav { display: none; } 
-.menu-icon { display: none; }
+.menu-icon { display: none; } /* Ikonu schováme na desktopu */
 
-/* Hero sekce */
+/* Hero sekce (hlavní obsah) */
 .hero {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100vh; /* Roztáhne se na celou výšku obrazovky */
   position: relative;
-  padding-top: 60px;
+  padding-top: 60px; /* Udělá prostor pro pevnou hlavičku, i když je skrytá */
 }
 
 .hero-model {
@@ -81,36 +83,46 @@ header {
 
 .hero a:hover { color: var(--white); }
 
-/* MOBILNÍ VERZE (pod 768px) */
+
+/* ================= MOBILE OPTIMIZATION (pod 768px) ================= */
 @media (max-width: 768px) {
-  .hero-links-left, .hero-links-right { display: none; } /* Schováme boční odkazy */
   
+  /* Na mobilu schováme odkazy po stranách */
+  .hero-links-left, .hero-links-right { display: none; } 
+  
+  /* A aktivujeme ikonu hamburgeru */
   .menu-icon {
     display: flex;
     flex-direction: column;
     gap: 5px;
     cursor: pointer;
+    width: 25px;
   }
-  .menu-icon span { width: 25px; height: 3px; background: var(--accent); }
+  .menu-icon span { width: 100%; height: 3px; background: var(--accent); }
 
+  /* Zobrazíme hlavní navigační menu (které bylo na desktopu skryté) */
   .main-nav {
-    display: none;
+    display: none; /* Skryté, dokud se neklikne na hamburger */
     position: absolute;
-    top: 70px;
+    top: 65px; /* Pod hlavičkou */
     left: 0;
     width: 100%;
     background: var(--bg);
     flex-direction: column;
     align-items: center;
-    padding: 20px;
-    gap: 20px;
+    padding: 20px 0;
+    gap: 15px;
     box-shadow: 0 10px 10px rgba(0,0,0,0.05);
   }
 
+  /* Logika pro zobrazení menu po kliknutí na checkbox */
   #menu-toggle:checked ~ .main-nav { display: flex; }
 
-  .hero { height: auto; padding: 100px 20px; }
+  /* Úprava layoutu pro mobil */
+  .hero { height: auto; padding: 100px 20px 40px; flex-direction: column; }
   .hero-model { width: 300px; height: 450px; }
+  
+  /* Skryje 3D canvas a ukáže obrázek robot-barva.png */
   .hero-model canvas { display: none !important; }
   .mobile-fallback { display: block; }
 }
