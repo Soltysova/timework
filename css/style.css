@@ -327,6 +327,19 @@ body:not(.home-page) header {
   font-size: 14px;
   line-height: 1.7;
 }
+
+/* Toto zajistí, že lightbox bude vždy VŽDY nad menu, 
+   takže menu pod ním nebude vidět ani na něj nepůjde kliknout */
+
+.lg-backdrop, .lg-outer, .mfp-bg, .mfp-wrap, .lightbox-overlay {
+  z-index: 999999 !important; /* Extrémně vysoká vrstva pro lightbox */
+}
+
+/* Vaše menu by mělo mít nižší z-index, např. 1000 */
+header, nav, .menu-index {
+  z-index: 1000;
+}
+
 /* ================= 3D LAYOUT ================= */
 
 .threed-grid {
