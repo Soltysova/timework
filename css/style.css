@@ -1,7 +1,4 @@
-/*
-© 2025 Berta Soltysova / design
-All rights reserved.
-*/
+/* ... ponechte své root a základní styly stejné ... */
 
 :root {
   --bg: #F9CBC7;
@@ -18,19 +15,10 @@ body {
   font-family: 'Manrope', sans-serif;
   background-color: var(--bg);
   color: var(--text);
+  overflow-x: hidden;
 }
 
-a {
-  text-decoration: none;
-  color: var(--text);
-}
-
-a:hover {
-  color: var(--hover);
-}
-
-/* ================= HEADER + MENU (DESKTOP) ================= */
-
+/* ================= HEADER + MENU ================= */
 header {
   padding: 24px 40px;
   display: flex;
@@ -42,14 +30,9 @@ header {
   z-index: 2000;
 }
 
-.logo {
-  width: 32px;
-}
+.logo { width: 32px; }
 
-nav {
-  display: flex;
-  gap: 16px;
-}
+nav { display: flex; gap: 16px; }
 
 nav a {
   padding: 8px 16px;
@@ -58,37 +41,11 @@ nav a {
   color: var(--bg);
   font-size: 14px;
   letter-spacing: 0.05em;
-  white-space: nowrap;
 }
 
-nav a:hover {
-  color: var(--hover);
-}
-
-/* ================= HAMBURGER ICON ================= */
-
-#menu-toggle {
-  display: none;
-}
-
-.menu-icon {
-  display: none;
-  width: 32px;
-  height: 24px;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-}
-
-.menu-icon span {
-  height: 3px;
-  background-color: var(--accent);
-  border-radius: 2px;
-  display: block;
-}
+#menu-toggle { display: none; }
 
 /* ================= HERO ================= */
-
 .hero {
   display: flex;
   justify-content: center;
@@ -101,22 +58,20 @@ nav a:hover {
 .hero-model {
   width: 420px;
   height: 650px;
-  overflow: hidden;
-  position: relative; /* Zásadní pro správné souřadnice getBoundingClientRect */
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.hero-model canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100% !important;
+
+.mobile-fallback {
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
-.hero-links-left,
-.hero-links-right {
+.hero-links-left, .hero-links-right {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -130,77 +85,19 @@ nav a:hover {
 .hero-links-left { left: 80px; }
 .hero-links-right { right: 80px; }
 
-/* ================= GALLERY ================= */
-
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 40px;
-  padding: 40px;
-}
-
-.gallery.kresba { grid-template-columns: repeat(3, 1fr); }
-.gallery.malba { grid-template-columns: repeat(2, 1fr); }
-.gallery.ilustrace { grid-template-columns: repeat(4, 1fr); }
-.gallery.grafika { grid-template-columns: repeat(3, 1fr); }
-.gallery.trid {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-.gallery-item {
-  background-color: var(--bg);
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-}
-
-.gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.gallery-item:hover img {
-  transform: scale(1.05);
-}
-
-.gallery-title {
-  background-color: var(--accent);
-  color: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: clamp(18px, 2.2vw, 60px);
-  letter-spacing: 0.15em;
-  aspect-ratio: 1 / 1;
-}
-
-/* ================= CONTACT ================= */
-
-.contact {
-  max-width: 800px;
-  margin: 2px auto;
-  background-color: var(--white);
-  padding: 10px 60px 10px 60px;
-  text-align: center;
-}
-.contact .intro-text {
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-/* ================= MOBILE – HAMBURGER MENU ================= */
-
+/* ================= MOBILE OPTIMIZATION (768px) ================= */
 @media (max-width: 768px) {
-
-  header {
-    justify-content: space-between;
-    padding: 16px 20px;
-  }
+  header { justify-content: space-between; padding: 16px 20px; }
 
   .menu-icon {
     display: flex;
+    width: 30px;
+    height: 20px;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
   }
+  .menu-icon span { height: 3px; background-color: var(--accent); border-radius: 2px; }
 
   nav {
     position: absolute;
@@ -209,210 +106,31 @@ nav a:hover {
     width: 100%;
     background-color: var(--bg);
     flex-direction: column;
-    align-items: center;
-    gap: 12px;
     padding: 24px;
     display: none;
     z-index: 1000;
   }
 
-  nav a {
-    width: 100%;
-    text-align: center;
-    padding: 12px;
-    background-color: transparent;
-    border-bottom: 1px solid rgba(115, 76, 63, 0.3);
-    border-radius: 0;
-	color: var(--accent);
-    font-weight: 400;
- 
-  }
+  /* Hamburger logic */
+  #menu-toggle:checked ~ nav { display: flex; }
 
-  #menu-toggle:checked + .menu-icon + nav {
-    display: flex;
-  }
+  .hero { flex-direction: column; padding: 20px; min-height: auto; }
 
-  .gallery {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-    padding: 24px;
-  }
-}
-
-@media (max-width: 480px) {
-  .gallery {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ================= LIGHTBOX ================= */
-
-.lightbox {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  z-index: 999;
-}
-
-.lightbox:target {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.lightbox img {
-  max-width: 90vw;
-  max-height: 90vh;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-}
-
-.lightbox-close {
-  position: absolute;
-  inset: 0;
-  cursor: zoom-out;
-	z-index: 1;
-}
-
-.lightbox figure {
-  margin: 0;
-  text-align: center;
-}
-
-.lightbox figcaption {
-  margin-top: 16px;
-  color: var(--white);
-  font-size: 14px;
-  letter-spacing: 0.05em;
-}
-
-/* LIGHTBOX NAVIGATION */
-.lightbox-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 48px;
-  color: var(--white);
-  text-decoration: none;
-  padding: 16px;
-  opacity: 0.6;
-  transition: opacity 0.2s ease;
-  z-index: 1000;
-}
-
-.lightbox-nav:hover {
-  opacity: 1;
-}
-
-.lightbox-nav.prev {
-  left: 40px;
-}
-
-.lightbox-nav.next {
-  right: 40px;
-}
-/* ================= 3D LAYOUT ================= */
-
-.threed-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  padding: 40px;
-}
-
-.threed-item {
-  aspect-ratio: 1 / 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-/* LEVÝ BLOK – TEXT */
-
-.threed-text {
-  background-color: var(--accent);
-  color: var(--bg);
-  font-size: clamp(16px, 2vw, 28px);
-  letter-spacing: 0.12em;
-  text-align: center;
-  padding: 24px;
-  cursor: pointer;
-}
-
-.threed-text:hover {
-  background-color: var(--text);
-}
-
-/* PRAVÝ BLOK – ANIMACE */
-
-.threed-animation img,
-.threed-animation video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* ================= 3D ANIMATION ================= */
-
-.threed-animation {
-  background-color: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.threed-animation video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* MOBILE */
-
-@media (max-width: 768px) {
-  .threed-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* =========== PODEKOVANI ============ */
-
-.thank-you {
-    text-align: center;
-}
-
-.thank-you .center {
-    display: flex;
-    justify-content: center;
-}
-
-.thank-you .back-link {
-    display: inline-flex;
+  .hero-links-left, .hero-links-right {
+    position: static;
+    transform: none;
     align-items: center;
-    gap: 0.4em;
-    font-size: 1rem;
-    color: var(--text);
-}
+    gap: 16px;
+    margin: 20px 0;
+  }
 
-.thank-you .back-link:hover {
-  	color: var(--hover);
-}
+  .hero-model {
+    width: 300px;
+    height: 400px;
+    order: -1;
+  }
 
-.thank-you .icon-home {
-    width: 1.3em;
-    height: auto;
-    position: relative;
-    bottom: 0.1em;
-
-    transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.thank-you .back-link:hover .icon-home {
-    opacity: 0.7;
-    transform: translateX(2px);
+  /* Skryje 3D a ukáže robot-barva.png */
+  .hero-model canvas { display: none !important; }
+  .mobile-fallback { display: block; }
 }
