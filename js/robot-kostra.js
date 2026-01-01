@@ -44,9 +44,10 @@ function initThreeJS() {
             });
             
             model.rotation.y = Math.PI; 
-            const scaleValue = 2.5;
+            const scaleValue = 2.0; // Používám měřítko 2.0 z minulé odpovědi
             model.scale.set(scaleValue, scaleValue, scaleValue);
             model.position.y = -2.2;
+            model.position.x = -0.5; // TOTO JE NOVÝ ŘÁDEK: Posun modelu o 0.5 jednotky doleva
 
             scene.add(model);
         },
@@ -73,9 +74,11 @@ function initThreeJS() {
     }
 
     window.addEventListener('resize', () => {
-        camera.aspect = container.clientWidth / container.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(container.clientWidth, container.clientHeight);
+        if (container) {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
     });
 
     animate();
