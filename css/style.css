@@ -30,7 +30,7 @@ a:hover { color: var(--hover); }
 header {
   padding: 20px 40px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* ZMĚNA: Centruje menu na desktopu */
   align-items: center;
   position: absolute;
   top: 0;
@@ -38,12 +38,17 @@ header {
   z-index: 2000;
 }
 
-.logo { width: 32px; display: block; }
+.logo { 
+  width: 32px; 
+  display: block; 
+  position: absolute; /* ZMĚNA: Ponechá logo vlevo, i když je menu uprostřed */
+  left: 40px; 
+}
 
 /* Skrytí loga a horního menu pouze na úvodní stránce (desktop) */
 .home-page .logo, 
 .home-page .main-nav {
-    display: none;
+    display: none !important; /* ZMĚNA: Vynuceno, aby to nešlo vidět na indexu */
 }
 
 .menu-icon, #menu-toggle { display: none; }
@@ -66,6 +71,7 @@ main:not(.hero) {
 }
 
 /* ================= HERO (INDEX) ================= */
+/* Tato sekce zůstává beze změny a vztahuje se jen na index.html */
 
 .hero {
   display: flex;
@@ -122,7 +128,7 @@ main:not(.hero) {
       background-color: var(--text);
       border-radius: 2px;
   }
-
+  
   /* Skrytí bočních odkazů */
   .hero-links-left, .hero-links-right { display: none !important; }
 
@@ -158,6 +164,7 @@ main:not(.hero) {
 }
 
 /* ================= GALLERY ================= */
+/* Tato sekce je také beze změny */
 
 .gallery {
   display: grid;
