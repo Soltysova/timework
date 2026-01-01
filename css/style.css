@@ -88,7 +88,7 @@ main:not(.hero) {
     display: block;
 }
 
-.mobile-fallback { display: none; width: 100%; height: auto; }
+.mobile-fallback { display: none; width: 50%; height: auto; }
 
 .hero-links-left, .hero-links-right {
   position: absolute;
