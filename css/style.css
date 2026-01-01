@@ -99,7 +99,7 @@ nav a:hover {
 }
 
 .hero-model {
-  width: 360px;
+  width: 420px;
   height: 650px;
   overflow: hidden;
   position: relative; /* Zásadní pro správné souřadnice getBoundingClientRect */
