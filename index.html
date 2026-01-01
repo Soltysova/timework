@@ -1,35 +1,26 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-    <!--
-    © 2026 Berta Soltysova / design
-    All rights reserved.
-    -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="favicon.png" type="image/png">
     <title>Berta Soltysova – Portfolio</title>
-
-    <!-- Fonty -->
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
-
-    <!-- Three.js Import Map -->
+    <link href="fonts.googleapis.com" rel="stylesheet">
+    
     <script type="importmap">
     {
-      "imports": {
-        "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
-      }
-    }
+  "imports": {
+    "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+  }
+}
     </script>
-
-    <!-- Vlastní CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="home-page">
 
 <header>
-    <!-- Logo se zobrazí jen na ostatních stránkách díky CSS třídě .home-page -->
+    <!-- Logo: Na indexu ho CSS skryje, na ostatních stranách bude vlevo/uprostřed -->
     <a href="index.html"><img src="favicon.png" class="logo" alt="Logo"></a>
     
     <input type="checkbox" id="menu-toggle">
@@ -39,39 +30,30 @@
         <span></span>
     </label>
 
+    <!-- JEDINÁ NAVIGACE: Na desktop indexu se "rozestoupí" do stran, na mobilu bude v hamburgeru -->
     <nav class="main-nav">
-        <a href="pages/kresba.html">KRESBA</a>
-        <a href="pages/malba.html">MALBA</a>
-        <a href="pages/ilustrace.html">ILUSTRACE</a>
-        <a href="pages/grafika.html">GRAFIKA</a>
-        <a href="pages/3d.html">3D</a>
-        <a href="pages/kontakt.html">KONTAKT</a>
+        <div class="nav-group-left">
+            <a href="pages/kresba.html">KRESBA</a>
+            <a href="pages/malba.html">MALBA</a>
+            <a href="pages/ilustrace.html">ILUSTRACE</a>
+        </div>
+        
+        <div class="nav-group-right">
+            <a href="pages/grafika.html">GRAFIKA</a>
+            <a href="pages/3d.html">3D</a>
+            <a href="pages/kontakt.html">KONTAKT</a>
+        </div>
     </nav>
 </header>
 
 <main class="hero">
-    <!-- Desktop menu vlevo -->
-    <nav class="hero-links-left">
-        <a href="pages/kresba.html">KRESBA</a>
-        <a href="pages/malba.html">MALBA</a>
-        <a href="pages/ilustrace.html">ILUSTRACE</a>
-    </nav>
-
-    <!-- Středový objekt -->
     <div class="hero-model" id="model">
-        <!-- Sem skript vloží <canvas> (3D model) -->
+        <!-- 3D Model (Desktop) -->
+        <!-- Statický obrázek (Mobil) -->
         <img src="img/robot-barva.png" alt="Robot" class="mobile-fallback">
     </div>
-
-    <!-- Desktop menu vpravo -->
-    <nav class="hero-links-right">
-        <a href="pages/grafika.html">GRAFIKA</a>
-        <a href="pages/3d.html">3D</a>
-        <a href="pages/kontakt.html">KONTAKT</a>
-    </nav>
 </main>
 
-<!-- Skript pro 3D model -->
 <script type="module" src="js/robot-kostra.js"></script>
 
 </body>
