@@ -1,0 +1,344 @@
+/*
+© 2026 Berta Soltysova / design
+All rights reserved.
+*/
+
+:root {
+  --bg: #F9CBC7;
+  --text: #734C3F;
+  --accent: #734C3F;
+  --white: #ffffff;
+  --hover: #FFFFFF;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Manrope', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a { text-decoration: none; color: var(--text); }
+a:hover { color: var(--hover); }
+
+/* ================= HEADER + MENU ================= */
+
+header {
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 2000;
+}
+
+.logo { width: 32px; display: block; }
+
+/* Skrytí loga a horního menu pouze na úvodní stránce (desktop) */
+.home-page .logo, 
+.home-page .main-nav {
+    display: none;
+}
+
+.menu-icon, #menu-toggle { display: none; }
+
+.main-nav { display: flex; gap: 16px; }
+.main-nav a {
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: var(--accent);
+    color: var(--bg);
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+main:not(.hero) {
+    padding-top: 120px; 
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+/* ================= HERO (INDEX) ================= */
+
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  position: relative;
+}
+
+.hero-model {
+  width: 600px;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.hero-model canvas { 
+    display: block;
+}
+
+.mobile-fallback { display: none; width: 50%; height: auto; }
+
+.hero-links-left, .hero-links-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  font-size: 18px;
+  letter-spacing: 0.2em;
+  z-index: 10;
+}
+
+.hero-links-left { left: 10%; }
+.hero-links-right { right: 10%; }
+
+/* ================= MOBILNÍ OPTIMALIZACE (pod 768px) ================= */
+
+@media (max-width: 768px) {
+  header { padding: 20px; position: fixed; background: var(--bg); }
+
+  /* Na mobilu VŽDY ukázat logo i hamburger */
+  .home-page .logo { display: block; }
+  .menu-icon { display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
+  
+  /* Vykreslení čárek hamburgeru */
+  .menu-icon span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: var(--text);
+      border-radius: 2px;
+  }
+
+  /* Skrytí bočních odkazů */
+  .hero-links-left, .hero-links-right { display: none !important; }
+
+  /* Mobilní menu - vysouvací */
+  .main-nav {
+    display: none;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 70px);
+    background: var(--bg);
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
+    gap: 20px;
+    z-index: 1999;
+  }
+
+  .main-nav a {
+    background: transparent;
+    color: var(--text);
+    font-size: 20px;
+  }
+
+  #menu-toggle:checked ~ .main-nav { display: flex; }
+
+  /* Model vs Obrázek */
+  .hero-model canvas { display: none !important; }
+  .mobile-fallback { display: block; width: 80%; }
+  
+  .hero { height: 100vh; padding-top: 70px; }
+}
+
+/* ================= GALLERY ================= */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  padding: 40px;
+}
+
+.gallery.kresba { grid-template-columns: repeat(3, 1fr); }
+.gallery.malba { grid-template-columns: repeat(2, 1fr); }
+.gallery.ilustrace { grid-template-columns: repeat(4, 1fr); }
+.gallery.grafika { grid-template-columns: repeat(3, 1fr); }
+.gallery.trid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.gallery-item {
+  background-color: var(--bg);
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.gallery-title {
+  background-color: var(--accent);
+  color: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(18px, 2.2vw, 60px);
+  letter-spacing: 0.15em;
+  aspect-ratio: 1 / 1;
+}
+
+/* ================= CONTACT ================= */
+
+.contact {
+  max-width: 800px;
+  margin: 2px auto;
+  background-color: var(--white);
+  padding: 10px 60px 10px 60px;
+  text-align: center;
+}
+.contact .intro-text {
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ================= LIGHTBOX ================= */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 999;
+}
+
+.lightbox:target {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-close {
+  position: absolute;
+  inset: 0;
+  cursor: zoom-out;
+	z-index: 1;
+}
+
+.lightbox figure {
+  margin: 0;
+  text-align: center;
+}
+
+.lightbox figcaption {
+  margin-top: 16px;
+  color: var(--white);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+}
+
+/* LIGHTBOX NAVIGATION */
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 48px;
+  color: var(--white);
+  text-decoration: none;
+  padding: 16px;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+  z-index: 1000;
+}
+
+.lightbox-nav:hover {
+  opacity: 1;
+}
+
+.lightbox-nav.prev {
+  left: 40px;
+}
+
+.lightbox-nav.next {
+  right: 40px;
+}
+/* ================= 3D LAYOUT ================= */
+
+.threed-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding: 40px;
+}
+
+.threed-item {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* LEVÝ BLOK – TEXT */
+
+.threed-text {
+  background-color: var(--accent);
+  color: var(--bg);
+  font-size: clamp(16px, 2vw, 28px);
+  letter-spacing: 0.12em;
+  text-align: center;
+  padding: 24px;
+  cursor: pointer;
+}
+
+.threed-text:hover {
+  background-color: var(--text);
+}
+
+/* PRAVÝ BLOK – ANIMACE */
+
+.threed-animation img,
+.threed-animation video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ================= 3D ANIMATION ================= */
+
+.threed-animation {
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.threed-animation video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
