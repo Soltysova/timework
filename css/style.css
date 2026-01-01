@@ -30,7 +30,7 @@ a:hover { color: var(--hover); }
 header {
   padding: 20px 40px;
   display: flex;
-  justify-content: center; /* ZMĚNA: Centruje logo i menu dohromady na střed */
+  justify-content: center; /* Centruje logo i menu dohromady na střed */
   align-items: center;
   position: absolute;
   top: 0;
@@ -119,8 +119,8 @@ main:not(.hero) {
     padding: 20px; 
     position: fixed; 
     background: var(--bg); 
-    justify-content: space-between; /* ZMĚNA: Na mobilu logo vlevo, hamburger vpravo */
-    gap: 0; /* Na mobilu nepotřebujeme gap */
+    justify-content: space-between; /* Na mobilu logo vlevo, hamburger vpravo */
+    gap: 0; 
   }
 
   /* Na mobilu VŽDY ukázat logo i hamburger */
@@ -169,6 +169,14 @@ main:not(.hero) {
   
   .hero { height: 100vh; padding-top: 70px; }
 }
+
+/* ================= GALERIE MOBIL 480px ================= */
+@media (max-width: 480px) {
+  .gallery {
+    grid-template-columns: 1fr; /* Změna: jeden sloupec */
+  }
+}
+
 
 /* ================= GALLERY ================= */
 
