@@ -43,21 +43,21 @@ loader.load(
         // Základní transformace modelu
         model.rotation.y = Math.PI; 
         
-        // ZVĚTŠENÍ MODELU: Změněno z 1.1 na 2.5
-        const scaleValue = 2.5;
+        // ZVĚTŠENÍ MODELU: Nastaveno na 3
+        const scaleValue = 3;
         model.scale.set(scaleValue, scaleValue, scaleValue);
         
-        // ÚPRAVA POZICE: Posunuto níže (z -1 na -2.2), aby byl model kvůli velikosti správně vycentrován
-        model.position.y = -2.2;
+        // ÚPRAVA POZICE: Sníženo na -2.7, aby postava správně seděla v záběru
+        model.position.y = -2.7;
 
         scene.add(model);
-        console.log("Model načten, zvětšen a vycentrován.");
+        console.log("Model načten, zvětšen na 3 a vycentrován.");
     },
     undefined,
     (error) => console.error('Chyba při načítání:', error)
 );
 
-// Pozice kamery (můžete zmenšit na 3, pokud chcete robota ještě více "do obličeje")
+// Pozice kamery
 camera.position.z = 4;
 
 // Sledování pohybu myši
