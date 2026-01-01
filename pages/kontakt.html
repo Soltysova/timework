@@ -61,5 +61,28 @@ Jakékoliv kopírování, úpravy nebo další šíření bez souhlasu autora js
 	
 <p><a href="#">Instagram</a> / <a href="#">LinkedIn</a></p>
 </section>
+
+<script>
+  const form = document.querySelector("form"); // najde váš formulář
+  
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault(); // zabrání klasickému odeslání a přesměrování
+    const data = new FormData(form);
+    
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (response.ok) {
+      // TADY se děje to kouzlo – pošle vás to na váš soubor
+      window.location.href = "/dekuji.html"; 
+    } else {
+      alert("Něco se nepovedlo, zkuste to znovu.");
+    }
+  });
+</script>
+
 </body>
 </html>
