@@ -1,5 +1,5 @@
 /*
-© 2025 Berta Soltysova / design
+© 2026 Berta Soltysova / design
 All rights reserved.
 */
 
@@ -25,12 +25,12 @@ body {
 a { text-decoration: none; color: var(--text); }
 a:hover { color: var(--hover); }
 
-/* ================= HEADER + MENU (DESKTOP DEFAULT) ================= */
+/* ================= HEADER + MENU ================= */
 
 header {
   padding: 20px 40px;
   display: flex;
-  justify-content: space-between; /* Logo vlevo, menu/ikony vpravo */
+  justify-content: space-between;
   align-items: center;
   position: absolute;
   top: 0;
@@ -38,12 +38,17 @@ header {
   z-index: 2000;
 }
 
-.logo { width: 32px; }
+.logo { width: 32px; display: block; }
 
-/* Na desktopu schováme ikonu hamburgeru a samotné menu */
+/* Skrytí loga a horního menu pouze na úvodní stránce (desktop) */
+.home-page .logo, 
+.home-page .main-nav {
+    display: none;
+}
+
 .menu-icon, #menu-toggle { display: none; }
-.main-nav { display: flex; gap: 16px; } /* HLAVNÍ MENU: Zobrazí se na desktopu! */
 
+.main-nav { display: flex; gap: 16px; }
 .main-nav a {
     padding: 8px 16px;
     border-radius: 4px;
@@ -54,25 +59,13 @@ header {
     white-space: nowrap;
 }
 
-
-/* Všechny <main> bloky (kromě .hero na indexu) potřebují padding, aby obsah nejel pod header */
 main:not(.hero) {
-    padding-top: 100px; 
+    padding-top: 120px; 
     padding-left: 40px;
     padding-right: 40px;
-    padding-bottom: 40px;
 }
 
-/* ================= HERO (DESKTOP INDEX STRÁNKA) ================= */
-
-/* Na stránce index.html chceme skrýt horní navigaci, protože jsou tam boční odkazy */
-.hero + script + header .main-nav {
-    display: none;
-}
-/* A na indexu nechceme vidět ikonu "domů" vlevo nahoře */
-.hero + script + header .logo {
-    display: none;
-}
+/* ================= HERO (INDEX) ================= */
 
 .hero {
   display: flex;
@@ -80,29 +73,22 @@ main:not(.hero) {
   align-items: center;
   height: 100vh; 
   position: relative;
-  padding-top: 0; /* Zrušíme padding, protože header je skrytý */
 }
 
 .hero-model {
-  width: 420px;
-  height: 650px;
+  width: 450px;
+  height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
-/* 3D CANVAS: Viditelný na desktopu */
 .hero-model canvas { 
-    display: block !important; 
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
+    display: block;
 }
 
-/* Statický obrázek: Skrytý na desktopu */
-.mobile-fallback { display: none; }
+.mobile-fallback { display: none; width: 100%; height: auto; }
 
 .hero-links-left, .hero-links-right {
   position: absolute;
@@ -113,84 +99,60 @@ main:not(.hero) {
   gap: 40px;
   font-size: 18px;
   letter-spacing: 0.2em;
+  z-index: 10;
 }
 
 .hero-links-left { left: 10%; }
 .hero-links-right { right: 10%; }
 
-/* ================= GALLERY ================= */
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 40px;
-}
-.gallery.kresba { grid-template-columns: repeat(3, 1fr); }
-/* ... (další styly galerie beze změny) ... */
-
-
 /* ================= MOBILNÍ OPTIMALIZACE (pod 768px) ================= */
+
 @media (max-width: 768px) {
-  
-  header { padding: 16px 20px; }
+  header { padding: 20px; position: fixed; background: var(--bg); }
 
-  /* Na mobilu chceme VŠUDE vidět logo domů, i na indexu */
-  .hero + script + header .logo {
+  /* Na mobilu VŽDY ukázat logo i hamburger */
+  .home-page .logo { display: block; }
+  .menu-icon { display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
+  
+  /* Vykreslení čárek hamburgeru */
+  .menu-icon span {
       display: block;
+      width: 25px;
+      height: 3px;
+      background-color: var(--text);
+      border-radius: 2px;
   }
-  
-  /* Na mobilu schováme odkazy po stranách robota */
-  .hero-links-left, .hero-links-right { display: none; } 
-  
-  /* A aktivujeme ikonu hamburgeru */
-  .menu-icon {
-    display: flex; /* Zobrazí ikonu na mobilu */
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
-    width: 25px;
-  }
-  
-  /* Zde musíme skrýt desktopové zobrazení menu na mobilu */
-  .main-nav { display: none; } 
 
-  /* A ukázat mobilní verzi menu po kliknutí na checkbox */
+  /* Skrytí bočních odkazů */
+  .hero-links-left, .hero-links-right { display: none !important; }
+
+  /* Mobilní menu - vysouvací */
   .main-nav {
-    position: absolute;
-    top: 65px; /* Pod hlavičkou */
+    display: none;
+    position: fixed;
+    top: 70px;
     left: 0;
     width: 100%;
+    height: calc(100vh - 70px);
     background: var(--bg);
     flex-direction: column;
     align-items: center;
-    padding: 20px 0;
-    gap: 15px;
-    box-shadow: 0 10px 10px rgba(0,0,0,0.05);
+    padding-top: 40px;
+    gap: 20px;
+    z-index: 1999;
   }
+
   .main-nav a {
-    background-color: transparent;
-    color: var(--accent);
-    border-bottom: 1px solid rgba(115, 76, 63, 0.3);
-    width: 90%;
-    text-align: center;
-    padding: 10px;
+    background: transparent;
+    color: var(--text);
+    font-size: 20px;
   }
+
   #menu-toggle:checked ~ .main-nav { display: flex; }
 
-  /* Úprava layoutu pro mobil */
-  .hero { height: auto; padding: 100px 20px 40px; flex-direction: column; }
-  .hero-model { width: 300px; height: 450px; }
-  
-  /* Na mobilu: Skryje 3D canvas a ukáže obrázek robot-barva.png */
+  /* Model vs Obrázek */
   .hero-model canvas { display: none !important; }
-  .mobile-fallback { display: block; }
+  .mobile-fallback { display: block; width: 80%; }
   
-  /* Úprava odsazení pro ostatní stránky na mobilu */
-  main:not(.hero) {
-      padding-top: 80px; 
-      padding-left: 20px;
-      padding-right: 20px;
-      padding-bottom: 20px;
-  }
-  
-  .gallery { padding: 0; }
+  .hero { height: 100vh; padding-top: 70px; }
 }
