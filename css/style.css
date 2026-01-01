@@ -25,7 +25,7 @@ body {
 a { text-decoration: none; color: var(--text); transition: 0.3s; }
 a:hover { color: var(--hover); }
 
-/* ================= HEADER & NAVIGACE (SPOLEČNÉ) ================= */
+/* ================= HEADER (HORNÍ LIŠTA) ================= */
 
 header {
   padding: 20px 40px;
@@ -35,16 +35,23 @@ header {
   top: 0;
   width: 100%;
   z-index: 2000;
-  background-color: var(--bg); /* Aby pod menu neprosvítala galerie */
+  background-color: var(--bg);
+}
+
+/* Na desktopovém indexu skryjeme horní lištu, aby nebyla 2x */
+@media (min-width: 769px) {
+  .home-page header {
+    display: none !important;
+  }
 }
 
 .logo { width: 32px; display: block; }
 
 #menu-toggle { display: none; }
 
-/* Grafický hamburger - tři čárky */
+/* Hamburger ikona */
 .menu-icon {
-  display: none; /* Defaultně na desktopu schovat */
+  display: none;
   flex-direction: column;
   gap: 5px;
   cursor: pointer;
@@ -59,12 +66,7 @@ header {
   border-radius: 2px;
 }
 
-/* ================= INDEX STRÁNKA (VÝJIMKY) ================= */
-
-/* Na desktopu indexu schováme horní lištu (máme boční menu) */
-@media (min-width: 769px) {
-    .home-page header { display: none !important; }
-}
+/* ================= INDEX STRÁNKA (DESKTOP) ================= */
 
 .hero {
   display: flex;
@@ -74,9 +76,16 @@ header {
   position: relative;
 }
 
-.hero-model { width: 600px; height: 80vh; display: flex; align-items: center; justify-content: center; }
+.hero-model { 
+  width: 600px; 
+  height: 80vh; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  z-index: 1;
+}
 
-/* Boční menu na indexu desktopu */
+/* BOČNÍ MENU NA INDEXU - Oprava viditelnosti */
 .hero-links-left, .hero-links-right {
   position: absolute;
   top: 50%;
@@ -86,40 +95,38 @@ header {
   gap: 40px;
   font-size: 18px;
   letter-spacing: 0.2em;
-  z-index: 100;
+  z-index: 100; /* Musí být nad modelem */
 }
+
 .hero-links-left { left: 10%; }
 .hero-links-right { right: 10%; }
 
 .mobile-fallback { display: none; width: 80%; height: auto; }
 
-/* ================= OSTATNÍ STRÁNKY (GALERIE) ================= */
+/* ================= OSTATNÍ STRÁNKY (DESKTOP) ================= */
 
-/* Menu na střed u ostatních stran */
 body:not(.home-page) header {
-    justify-content: center;
-    gap: 30px;
+  justify-content: center;
+  gap: 30px;
 }
 
-body:not(.home-page) .main-nav { display: flex; gap: 16px; }
+.main-nav { display: flex; gap: 16px; }
 
-body:not(.home-page) .main-nav a {
-    padding: 8px 16px;
-    border-radius: 4px;
-    background-color: var(--accent);
-    color: var(--bg);
-    font-size: 14px;
-    letter-spacing: 0.05em;
+.main-nav a {
+  padding: 8px 16px;
+  background-color: var(--accent);
+  color: var(--bg);
+  border-radius: 4px;
+  font-size: 14px;
 }
 
-/* HLAVNÍ ODSZENÍ GALERIE - aby nebyla pod menu */
 .gallery {
   display: grid;
   gap: 40px;
-  padding: 140px 40px 40px 40px; /* Mezera pro desktopové menu */
+  padding: 140px 40px 40px 40px;
 }
 
-/* Vaše definice sloupců */
+/* Sloupce galerie */
 .gallery.kresba { grid-template-columns: repeat(3, 1fr); }
 .gallery.malba { grid-template-columns: repeat(2, 1fr); }
 .gallery.ilustrace { grid-template-columns: repeat(4, 1fr); }
@@ -127,7 +134,7 @@ body:not(.home-page) .main-nav a {
 .gallery.trid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 
 .gallery-item { aspect-ratio: 1 / 1; overflow: hidden; }
-.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s ease; }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
 .gallery-item:hover img { transform: scale(1.05); }
 
 .gallery-title {
@@ -136,13 +143,12 @@ body:not(.home-page) .main-nav a {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(18px, 2.2vw, 60px);
-  letter-spacing: 0.15em;
-  aspect-ratio: 1 / 1;
   text-align: center;
+  font-size: clamp(16px, 2vw, 30px);
+  aspect-ratio: 1 / 1;
 }
 
-/* ================= RESPONSIVE (MOBIL < 768px) ================= */
+/* ================= MOBILNÍ NASTAVENÍ (< 768px) ================= */
 
 @media (max-width: 768px) {
   header {
@@ -151,68 +157,66 @@ body:not(.home-page) .main-nav a {
     padding: 20px;
   }
 
-  /* Index na mobilu: Schovat logo, hamburger vpravo */
-  .home-page .logo { visibility: hidden; }
+  /* Na mobilním indexu schovat logo (hamburger vpravo) */
+  .home-page .logo { display: none; }
 
   .menu-icon { display: flex; order: 2; }
 
-  /* Skrytí bočního menu z indexu */
+  /* Skrytí bočních menu */
   .hero-links-left, .hero-links-right { display: none !important; }
 
-  /* Mobilní vysouvací navigace */
+  /* MOBILNÍ MENU - OPRAVA POD SEBOU */
   .main-nav {
     display: none;
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100vh;
     background: var(--bg);
-    flex-direction: column;
+    flex-direction: column; /* Odkazy pod sebou */
     justify-content: center;
     align-items: center;
     z-index: 2500;
-    gap: 20px;
+    gap: 30px;
+  }
+
+  #menu-toggle:checked ~ .main-nav {
+    display: flex !important;
   }
 
   .main-nav a {
     font-size: 24px;
     background: none !important;
     color: var(--text) !important;
+    padding: 10px;
   }
 
-  #menu-toggle:checked ~ .main-nav { display: flex; }
-
-  /* Robot -> Obrázek */
   .hero-model canvas { display: none !important; }
   .mobile-fallback { display: block; margin: 0 auto; }
 
-  /* Galerie: Vždy jeden sloupec */
-  .gallery, .gallery.kresba, .gallery.malba, .gallery.ilustrace, .gallery.grafika, .threed-grid {
+  .gallery, .threed-grid {
     grid-template-columns: 1fr !important;
     padding-top: 100px;
   }
 }
 
-/* ================= 3D LAYOUT & LIGHTBOX ================= */
+/* ================= 3D A LIGHTBOX ================= */
 
 .threed-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 40px; }
-.threed-text { background-color: var(--accent); color: var(--bg); padding: 24px; text-align: center; display: flex; align-items: center; justify-content: center;}
+.threed-text { background: var(--accent); color: var(--bg); padding: 20px; text-align: center; }
 
 .lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0,0,0,0.9);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
   z-index: 4000;
 }
 .lightbox:target { opacity: 1; pointer-events: auto; }
-.lightbox img { max-width: 90vw; max-height: 80vh; }
-.lightbox-close { position: absolute; inset: 0; cursor: zoom-out; z-index: 1; }
-.lightbox figure { margin: 0; text-align: center; z-index: 2; }
-.lightbox figcaption { margin-top: 16px; color: var(--white); font-size: 14px; }
-.lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); font-size: 48px; color: var(--white); z-index: 1000; padding: 20px; }
-.lightbox-nav.prev { left: 20px; }
-.lightbox-nav.next { right: 20px; }
+.lightbox img { max-width: 90%; max-height: 80%; }
+.lightbox-close { position: absolute; inset: 0; }
+.lightbox-nav { position: absolute; top: 50%; color: white; font-size: 40px; padding: 20px; z-index: 4001; }
+.lightbox-nav.prev { left: 10px; }
+.lightbox-nav.next { right: 10px; }
