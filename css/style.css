@@ -25,7 +25,7 @@ body {
 a { text-decoration: none; color: var(--text); transition: 0.3s; }
 a:hover { color: var(--hover); }
 
-/* ================= HEADER & NAVIGACE (HORNÍ LIŠTA) ================= */
+/* ================= NAVIGACE (SPOLEČNÝ ZÁKLAD) ================= */
 
 header {
   padding: 20px 40px;
@@ -35,26 +35,12 @@ header {
   top: 0;
   width: 100%;
   z-index: 2000;
-  justify-content: center; /* Desktop: Logo a Menu na střed */
-  gap: 30px;
+  background-color: var(--bg); /* Aby pod menu nebyly vidět fotky */
 }
 
-/* SKRYTÍ HORNÍ LIŠTY NA DESKTOP INDEXU */
-@media (min-width: 769px) {
-    .home-page header {
-        display: none !important; /* Na indexu desktopu header vůbec neexistuje */
-    }
-}
+.logo { width: 32px; display: block; }
 
-.logo {
-  width: 32px;
-  display: block;
-}
-
-.main-nav { 
-  display: flex; 
-  gap: 16px; 
-}
+.main-nav { display: flex; gap: 16px; }
 
 .main-nav a {
     padding: 8px 16px;
@@ -68,25 +54,23 @@ header {
 
 #menu-toggle, .menu-icon { display: none; }
 
-/* ================= HERO (INDEX.HTML - DESKTOP) ================= */
+/* ================= STRÁNKA INDEX (VÝJIMKY) ================= */
+
+/* Na indexu schováme horní lištu úplně, protože máme boční menu */
+.home-page header {
+  display: none;
+}
 
 .hero {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; 
+  height: 100vh;
   position: relative;
 }
 
-.hero-model {
-  width: 600px;
-  height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.hero-model { width: 600px; height: 80vh; display: flex; align-items: center; justify-content: center; }
 
-/* BOČNÍ MENU NA INDEXU (Viditelné jen na desktopu) */
 .hero-links-left, .hero-links-right {
   position: absolute;
   top: 50%;
@@ -96,26 +80,28 @@ header {
   gap: 40px;
   font-size: 18px;
   letter-spacing: 0.2em;
-  z-index: 100;
-  pointer-events: all;
+  z-index: 10;
 }
-
 .hero-links-left { left: 10%; }
 .hero-links-right { right: 10%; }
 
-.mobile-fallback {
-  display: none;
-  width: 80%;
-  max-width: 400px;
+.mobile-fallback { display: none; width: 80%; height: auto; }
+
+/* ================= OSTATNÍ STRÁNKY (GALERIE) ================= */
+
+/* Nastavení hlavičky pro galerijní stránky (vše na střed) */
+body:not(.home-page) header {
+    justify-content: center;
+    gap: 30px;
 }
 
-/* ================= GALERIE (OSTATNÍ STRÁNKY) ================= */
-
-main:not(.hero) {
-    padding: 120px 40px 40px 40px;
+/* ODSZENÍ GALERIE - aby nezačínala pod menu */
+.gallery {
+  display: grid;
+  gap: 40px;
+  padding: 140px 40px 40px 40px; /* Těchto 140px vytvoří prostor pod menu */
 }
 
-.gallery { display: grid; gap: 40px; }
 .gallery.kresba { grid-template-columns: repeat(3, 1fr); }
 .gallery.malba { grid-template-columns: repeat(2, 1fr); }
 .gallery.ilustrace { grid-template-columns: repeat(4, 1fr); }
@@ -125,89 +111,71 @@ main:not(.hero) {
 .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
 .gallery-item:hover img { transform: scale(1.05); }
 
-/* ================= RESPONSIVE (MOBIL < 768px) ================= */
-
-@media (max-width: 768px) {
-  header {
-    display: flex !important; /* Na mobilu musí být header vidět i na indexu */
-    justify-content: space-between; 
-    padding: 20px;
-    background: var(--bg);
-  }
-
-  /* INDEX MOBIL: Schovat logo, hamburger zůstane vpravo */
-  .home-page .logo {
-    visibility: hidden; /* Zachová místo, ale není vidět = hamburger zůstane vpravo */
-  }
-
-  .logo { display: block; order: 1; }
-
-  .menu-icon {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
-    order: 2;
-  }
-
-  .menu-icon span {
-    display: block;
-    width: 25px;
-    height: 3px;
-    background-color: var(--text);
-  }
-
-  /* Schování bočních menu z indexu */
-  .hero-links-left, .hero-links-right {
-    display: none !important;
-  }
-
-  /* Mobilní menu přes celou obrazovku */
-  .main-nav {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: var(--bg);
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 1999;
-    gap: 25px;
-  }
-
-  #menu-toggle:checked ~ .main-nav {
-    display: flex;
-  }
-
-  .main-nav a { font-size: 20px; background: none; color: var(--text); }
-
-  /* 3D Model -> Obrázek */
-  .hero-model canvas { display: none !important; }
-  .mobile-fallback { display: block; margin: 0 auto; }
-
-  /* Galerie na jeden sloupec */
-  .gallery, .gallery.kresba, .gallery.malba, .gallery.ilustrace, .gallery.grafika, .threed-grid {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-/* ================= OSTATNÍ ================= */
-
 .gallery-title {
   background-color: var(--accent);
   color: var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 1 / 1;
-  font-size: clamp(18px, 4vw, 40px);
+  text-align: center;
+  font-size: clamp(14px, 2vw, 24px);
+  letter-spacing: 0.1em;
+  padding: 20px;
 }
 
-.threed-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 40px; }
-.threed-text { background: var(--accent); color: var(--bg); padding: 20px; text-align: center; }
+/* ================= MOBILNÍ VERZE (< 768px) ================= */
+
+@media (max-width: 768px) {
+  /* Na mobilu na indexu header ZAPNEME kvůli hamburgeru */
+  .home-page header { 
+    display: flex; 
+    background-color: var(--bg);
+  }
+
+  header { justify-content: space-between; padding: 20px; }
+
+  /* Na indexu logo schované, na ostatních vidět */
+  .home-page .logo { visibility: hidden; } 
+  
+  .menu-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 2001;
+  }
+
+  .menu-icon span { display: block; width: 25px; height: 3px; background-color: var(--text); }
+
+  /* Skrytí bočních menu z indexu */
+  .hero-links-left, .hero-links-right { display: none !important; }
+
+  /* Mobilní vysouvací menu */
+  .main-nav {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100vh;
+    background: var(--bg);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+  }
+
+  #menu-toggle:checked ~ .main-nav { display: flex; }
+
+  /* Model vs Obrázek */
+  .hero-model canvas { display: none !important; }
+  .mobile-fallback { display: block; margin: 0 auto; }
+
+  /* Galerie na jeden sloupec */
+  .gallery, .gallery.kresba, .gallery.malba, .gallery.ilustrace, .gallery.grafika {
+    grid-template-columns: 1fr !important;
+    padding-top: 100px; /* Menší mezera na mobilu */
+  }
+}
+
+/* ================= LIGHTBOX ================= */
 
 .lightbox {
   position: fixed;
@@ -221,3 +189,5 @@ main:not(.hero) {
   z-index: 3000;
 }
 .lightbox:target { opacity: 1; pointer-events: auto; }
+.lightbox img { max-width: 90%; max-height: 80%; }
+.lightbox-close { position: absolute; inset: 0; }
