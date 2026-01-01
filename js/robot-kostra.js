@@ -48,7 +48,7 @@ loader.load(
         model.scale.set(scaleValue, scaleValue, scaleValue);
         
         // ÚPRAVA POZICE: Sníženo na -2.7, aby postava správně seděla v záběru
-        model.position.y = -2.7;
+        model.position.y = -2.8;
 
         scene.add(model);
         console.log("Model načten, zvětšen na 3 a vycentrován.");
