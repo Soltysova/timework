@@ -47,7 +47,7 @@ header {
 /* Skrytí loga a horního menu pouze na úvodní stránce (desktop) */
 .home-page .logo, 
 .home-page .main-nav {
-    display: none !important; /* Tímto je index.html v bezpečí */
+    display: none; /* Odstraněno !important */
 }
 
 .menu-icon, #menu-toggle { display: none; }
@@ -123,10 +123,12 @@ main:not(.hero) {
     gap: 0; 
   }
 
-  /* Na mobilu VŽDY ukázat logo i hamburger */
-  .home-page .logo { display: block; }
-  .menu-icon { display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
-  
+  /* Na mobilu VŽDY ukázat logo i hamburger - Vynucení zobrazení */
+  .home-page .logo, 
+  .home-page .menu-icon { 
+      display: flex !important; /* ZMĚNA: Vynutí zobrazení ikony na mobilním indexu */
+  }
+
   /* Vykreslení čárek hamburgeru */
   .menu-icon span {
       display: block;
