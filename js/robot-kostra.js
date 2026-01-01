@@ -35,23 +35,29 @@ loader.load(
         model.traverse((object) => {
             if (object.isBone && object.name === 'hlava') {
                 headBone = object;
-                // Nastavení pořadí rotací pro stabilitu (vlevo-vpravo vs nahoru-dolů)
+                // Nastavení pořadí rotací pro stabilitu
                 headBone.rotation.order = 'YXZ'; 
             }
         });
         
-        // Základní transformace modelu (čelem k nám)
+        // Základní transformace modelu
         model.rotation.y = Math.PI; 
-        model.scale.set(1.1, 1.1, 1.1);
-        model.position.y = -1;
+        
+        // ZVĚTŠENÍ MODELU: Změněno z 1.1 na 2.5
+        const scaleValue = 2.5;
+        model.scale.set(scaleValue, scaleValue, scaleValue);
+        
+        // ÚPRAVA POZICE: Posunuto níže (z -1 na -2.2), aby byl model kvůli velikosti správně vycentrován
+        model.position.y = -2.2;
 
         scene.add(model);
-        console.log("Model načten v základní T-pozici.");
+        console.log("Model načten, zvětšen a vycentrován.");
     },
     undefined,
     (error) => console.error('Chyba při načítání:', error)
 );
 
+// Pozice kamery (můžete zmenšit na 3, pokud chcete robota ještě více "do obličeje")
 camera.position.z = 4;
 
 // Sledování pohybu myši
@@ -69,7 +75,7 @@ function animate() {
         const targetRY = mouseX * 1.2;
         headBone.rotation.y += (targetRY - headBone.rotation.y) * 0.1;
 
-        // Vertikální rotace (Osa Z - dle tvého předchozího zjištění)
+        // Vertikální rotace (Osa Z)
         const targetRZ = -mouseY * 0.8;
         headBone.rotation.z += (targetRZ - headBone.rotation.z) * 0.1;
     }
