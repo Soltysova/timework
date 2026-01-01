@@ -25,12 +25,10 @@
     
     <input type="checkbox" id="menu-toggle">
     <label for="menu-toggle" class="menu-icon">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
     </label>
 
-    <!-- Toto je hlavní menu, na desktopu skryté, na mobilu viditelné -->
+    <!-- Toto menu se zobrazí POUZE na mobilu -->
     <nav class="main-nav">
         <a href="pages/kresba.html">KRESBA</a>
         <a href="pages/malba.html">MALBA</a>
@@ -42,7 +40,7 @@
 </header>
 
 <main class="hero">
-    <!-- Tyto odkazy jsou viditelné POUZE na desktopu -->
+    <!-- Tyto odkazy se zobrazí POUZE na desktopu -->
     <div class="hero-links-left">
         <a href="pages/kresba.html">KRESBA</a>
         <a href="pages/malba.html">MALBA</a>
@@ -50,10 +48,11 @@
     </div>
 
     <div class="hero-model" id="model">
+        <!-- Tento obrázek se zobrazí POUZE na mobilu -->
         <img src="img/robot-barva.png" alt="Robot" class="mobile-fallback">
     </div>
 
-    <!-- Tyto odkazy jsou viditelné POUZE na desktopu -->
+    <!-- Tyto odkazy se zobrazí POUZE na desktopu -->
     <div class="hero-links-right">
         <a href="pages/grafika.html">GRAFIKA</a>
         <a href="pages/3d.html">3D</a>
