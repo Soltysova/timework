@@ -25,7 +25,7 @@ body {
 a { text-decoration: none; color: var(--text); transition: 0.3s; }
 a:hover { color: var(--hover); }
 
-/* ================= HEADER (HORNÍ LIŠTA A OSTATNÍ STRÁNKY) ================= */
+/* ================= HEADER (HORNÍ LIŠTA) ================= */
 
 header {
   padding: 20px 40px;
@@ -38,7 +38,7 @@ header {
   background-color: var(--bg);
 }
 
-/* Skrytí horní lišty na desktopovém indexu */
+/* Na desktopovém indexu skryjeme horní lištu, aby nebyla 2x */
 @media (min-width: 769px) {
   .home-page header {
     display: none !important;
@@ -85,21 +85,24 @@ header {
   z-index: 1;
 }
 
-/* BOČNÍ MENU NA INDEXU - Vynucená viditelnost na desktopu */
-.hero-links-left, .hero-links-right {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex !important; /* Zajišťuje, že jsou vidět */
-  flex-direction: column;
-  gap: 40px;
-  font-size: 18px;
-  letter-spacing: 0.2em;
-  z-index: 100;
+/* BOČNÍ MENU NA INDEXU - Vynucená viditelnost POUZE na desktopu */
+@media (min-width: 769px) {
+  .hero-links-left, .hero-links-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex !important; /* Zajišťuje, že jsou vidět */
+    flex-direction: column;
+    gap: 40px;
+    font-size: 18px;
+    letter-spacing: 0.2em;
+    z-index: 100;
+  }
+
+  .hero-links-left { left: 10%; }
+  .hero-links-right { right: 10%; }
 }
 
-.hero-links-left { left: 10%; }
-.hero-links-right { right: 10%; }
 
 .mobile-fallback { display: none; width: 80%; height: auto; }
 
@@ -120,10 +123,11 @@ body:not(.home-page) header {
   font-size: 14px;
 }
 
+/* HLAVNÍ ODSZENÍ GALERIE - aby nebyla pod menu */
 .gallery {
   display: grid;
   gap: 40px;
-  padding: 140px 40px 40px 40px; /* Odsazení pod menu */
+  padding: 140px 40px 40px 40px; /* Mezera pro desktopové menu */
 }
 
 /* Sloupce galerie */
@@ -150,7 +154,7 @@ body:not(.home-page) header {
 /* ================= MOBILNÍ NASTAVENÍ (< 768px) ================= */
 
 @media (max-width: 768px) {
-  /* Na mobilu se header musí zobrazit i na indexu */
+  /* Na mobilu musíme header zobrazit i na indexu kvůli hamburgeru */
   header {
     display: flex !important;
     justify-content: space-between;
@@ -168,17 +172,17 @@ body:not(.home-page) header {
 
   /* MOBILNÍ MENU PO ROZBALENÍ: Odkazy pod sebou a bez stylu tlačítek */
   .main-nav {
-    display: none;
+    display: none; /* Skryté, dokud se neklikne na toggle */
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100vh;
     background: var(--bg);
-    flex-direction: column !important; /* Vynutí seznam pod sebou */
+    flex-direction: column !important; /* <--- TOTO ZAJISTÍ SEZNAM POD SEBOU */
     justify-content: center;
     align-items: center;
     z-index: 2500;
     gap: 30px;
   }
-
+  
   /* Styl odkazů v mobilním menu - jako čistý seznam */
   .main-nav a {
     font-size: 24px;
@@ -189,9 +193,10 @@ body:not(.home-page) header {
   }
 
   #menu-toggle:checked ~ .main-nav {
-    display: flex !important;
+    display: flex !important; /* Zobrazit po kliku */
   }
 
+  /* Zobrazit statický obrázek místo 3D modelu na mobilu */
   .hero-model canvas { display: none !important; }
   .mobile-fallback { display: block; margin: 0 auto; }
 
