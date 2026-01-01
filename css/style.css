@@ -126,8 +126,8 @@ body:not(.home-page) header {
 /* HLAVNÍ ODSZENÍ GALERIE - aby nebyla pod menu */
 .gallery {
   display: grid;
-  gap: 40px;
-  padding: 140px 40px 40px 40px; /* Mezera pro desktopové menu */
+  gap: 20px;
+  padding: 0px 20px 0px 20px; /* Mezera pro desktopové menu */
 }
 
 /* Sloupce galerie */
