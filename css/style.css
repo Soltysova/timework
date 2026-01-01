@@ -327,3 +327,59 @@ body:not(.home-page) header {
   font-size: 14px;
   line-height: 1.7;
 }
+/* ================= 3D LAYOUT ================= */
+
+.threed-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding: 40px;
+}
+
+.threed-item {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* LEVÝ BLOK – TEXT */
+
+.threed-text {
+  background-color: var(--accent);
+  color: var(--bg);
+  font-size: clamp(16px, 2vw, 28px);
+  letter-spacing: 0.12em;
+  text-align: center;
+  padding: 24px;
+  cursor: pointer;
+}
+
+.threed-text:hover {
+  background-color: var(--text);
+}
+
+/* PRAVÝ BLOK – ANIMACE */
+
+.threed-animation img,
+.threed-animation video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ================= 3D ANIMATION ================= */
+
+.threed-animation {
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.threed-animation video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
