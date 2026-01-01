@@ -43,15 +43,15 @@ loader.load(
         // Základní transformace modelu
         model.rotation.y = Math.PI; 
         
-        // ZVĚTŠENÍ MODELU: Nastaveno na 3
-        const scaleValue = 3;
+        // ZVĚTŠENÍ MODELU: Nastaveno na 2.5
+        const scaleValue = 2.5;
         model.scale.set(scaleValue, scaleValue, scaleValue);
         
-        // ÚPRAVA POZICE: Sníženo na -2.7, aby postava správně seděla v záběru
-        model.position.y = -2.8;
+        // ÚPRAVA POZICE: Nastaveno na -2.2 pro měřítko 2.5
+        model.position.y = -2.2;
 
         scene.add(model);
-        console.log("Model načten, zvětšen na 3 a vycentrován.");
+        console.log("Model načten, zvětšen na 2.5.");
     },
     undefined,
     (error) => console.error('Chyba při načítání:', error)
