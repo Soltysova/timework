@@ -76,7 +76,7 @@ main:not(.hero) {
 }
 
 .hero-model {
-  width: 450px;
+  width: 600px;
   height: 80vh;
   display: flex;
   align-items: center;
