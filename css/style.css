@@ -25,35 +25,37 @@ body {
 a { text-decoration: none; color: var(--text); }
 a:hover { color: var(--hover); }
 
-/* ================= HEADER + MENU ================= */
+/* ================= HEADER + MENU (DESKTOP ZOBRAZENÍ - Výchozí) ================= */
 
 header {
   padding: 20px 40px;
   display: flex;
-  justify-content: center; /* ZMĚNA: Centruje menu na desktopu */
+  justify-content: center; /* ZMĚNA: Centruje logo i menu dohromady na střed */
   align-items: center;
   position: absolute;
   top: 0;
   width: 100%;
   z-index: 2000;
+  gap: 30px; /* Mezera mezi logem a menu na desktopu */
 }
 
 .logo { 
   width: 32px; 
   display: block; 
-  position: absolute; /* ZMĚNA: Ponechá logo vlevo, i když je menu uprostřed */
-  left: 40px; 
 }
 
 /* Skrytí loga a horního menu pouze na úvodní stránce (desktop) */
 .home-page .logo, 
 .home-page .main-nav {
-    display: none !important; /* ZMĚNA: Vynuceno, aby to nešlo vidět na indexu */
+    display: none !important; /* Tímto je index.html v bezpečí */
 }
 
 .menu-icon, #menu-toggle { display: none; }
 
-.main-nav { display: flex; gap: 16px; }
+.main-nav { 
+  display: flex; 
+  gap: 16px; 
+}
 .main-nav a {
     padding: 8px 16px;
     border-radius: 4px;
@@ -65,13 +67,12 @@ header {
 }
 
 main:not(.hero) {
-    padding-top: 120px; 
+    padding-top: 160px; /* Větší mezera mezi menu a galerií */
     padding-left: 40px;
     padding-right: 40px;
 }
 
 /* ================= HERO (INDEX) ================= */
-/* Tato sekce zůstává beze změny a vztahuje se jen na index.html */
 
 .hero {
   display: flex;
@@ -114,7 +115,13 @@ main:not(.hero) {
 /* ================= MOBILNÍ OPTIMALIZACE (pod 768px) ================= */
 
 @media (max-width: 768px) {
-  header { padding: 20px; position: fixed; background: var(--bg); }
+  header { 
+    padding: 20px; 
+    position: fixed; 
+    background: var(--bg); 
+    justify-content: space-between; /* ZMĚNA: Na mobilu logo vlevo, hamburger vpravo */
+    gap: 0; /* Na mobilu nepotřebujeme gap */
+  }
 
   /* Na mobilu VŽDY ukázat logo i hamburger */
   .home-page .logo { display: block; }
@@ -128,7 +135,7 @@ main:not(.hero) {
       background-color: var(--text);
       border-radius: 2px;
   }
-  
+
   /* Skrytí bočních odkazů */
   .hero-links-left, .hero-links-right { display: none !important; }
 
@@ -164,7 +171,6 @@ main:not(.hero) {
 }
 
 /* ================= GALLERY ================= */
-/* Tato sekce je také beze změny */
 
 .gallery {
   display: grid;
