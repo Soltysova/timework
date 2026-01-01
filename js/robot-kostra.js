@@ -44,10 +44,10 @@ function initThreeJS() {
             });
             
             model.rotation.y = Math.PI; 
-            const scaleValue = 2.0; // Používám měřítko 2.0 z minulé odpovědi
+            const scaleValue = 2.5; // Zpět na původní, větší měřítko
             model.scale.set(scaleValue, scaleValue, scaleValue);
-            model.position.y = -2.2;
-            model.position.x = -0.5; // TOTO JE NOVÝ ŘÁDEK: Posun modelu o 0.5 jednotky doleva
+            model.position.y = -2.2; 
+            model.position.x = -0.5; // Posun doleva zachován
 
             scene.add(model);
         },
