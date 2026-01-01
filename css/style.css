@@ -217,3 +217,54 @@ body:not(.home-page) header {
 .lightbox-nav { position: absolute; top: 50%; color: white; font-size: 40px; padding: 20px; z-index: 4001; }
 .lightbox-nav.prev { left: 10px; }
 .lightbox-nav.next { right: 10px; }
+
+/* =========== PODEKOVANI ============ */
+
+.thank-you {
+    text-align: center;
+}
+
+.thank-you .center {
+    display: flex;
+    justify-content: center;
+}
+
+.thank-you .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    font-size: 1rem;
+    color: var(--text);
+}
+
+.thank-you .back-link:hover {
+  	color: var(--hover);
+}
+
+.thank-you .icon-home {
+    width: 1.3em;
+    height: auto;
+    position: relative;
+    bottom: 0.1em;
+
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.thank-you .back-link:hover .icon-home {
+    opacity: 0.7;
+    transform: translateX(2px);
+}
+
+/* ================= CONTACT ================= */
+
+.contact {
+  max-width: 800px;
+  margin: 2px auto;
+  background-color: var(--white);
+  padding: 10px 60px 10px 60px;
+  text-align: center;
+}
+.contact .intro-text {
+  font-size: 14px;
+  line-height: 1.7;
+}
