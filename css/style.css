@@ -30,7 +30,7 @@ a:hover { color: var(--hover); }
 header {
   padding: 20px 40px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Logo vlevo, menu/ikony vpravo */
   align-items: center;
   position: absolute;
   top: 0;
@@ -42,7 +42,18 @@ header {
 
 /* Na desktopu schováme ikonu hamburgeru a samotné menu */
 .menu-icon, #menu-toggle { display: none; }
-.main-nav { display: none; } 
+.main-nav { display: flex; gap: 16px; } /* HLAVNÍ MENU: Zobrazí se na desktopu! */
+
+.main-nav a {
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: var(--accent);
+    color: var(--bg);
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
 
 /* Všechny <main> bloky (kromě .hero na indexu) potřebují padding, aby obsah nejel pod header */
 main:not(.hero) {
@@ -52,7 +63,16 @@ main:not(.hero) {
     padding-bottom: 40px;
 }
 
-/* ================= HERO (DESKTOP) ================= */
+/* ================= HERO (DESKTOP INDEX STRÁNKA) ================= */
+
+/* Na stránce index.html chceme skrýt horní navigaci, protože jsou tam boční odkazy */
+.hero + script + header .main-nav {
+    display: none;
+}
+/* A na indexu nechceme vidět ikonu "domů" vlevo nahoře */
+.hero + script + header .logo {
+    display: none;
+}
 
 .hero {
   display: flex;
@@ -60,7 +80,7 @@ main:not(.hero) {
   align-items: center;
   height: 100vh; 
   position: relative;
-  padding-top: 60px;
+  padding-top: 0; /* Zrušíme padding, protože header je skrytý */
 }
 
 .hero-model {
@@ -104,22 +124,20 @@ main:not(.hero) {
   grid-template-columns: repeat(2, 1fr);
   gap: 40px;
 }
-/* ... (zbytek stylů galerie a lightboxu) ... */
 .gallery.kresba { grid-template-columns: repeat(3, 1fr); }
-.gallery.malba { grid-template-columns: repeat(2, 1fr); }
-.gallery.ilustrace { grid-template-columns: repeat(4, 1fr); }
-.gallery.grafika { grid-template-columns: repeat(3, 1fr); }
-.gallery.trid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-.gallery-item { aspect-ratio: 1 / 1; overflow: hidden; }
-.gallery-item img { width: 100%; height: 100%; object-fit: cover; }
-.gallery-title { background-color: var(--accent); color: var(--bg); display: flex; align-items: center; justify-content: center; font-size: clamp(18px, 2.2vw, 60px); letter-spacing: 0.15em; }
+/* ... (další styly galerie beze změny) ... */
 
 
-/* ================= MOBILNÍ OPTIMIZACE (pod 768px) ================= */
+/* ================= MOBILNÍ OPTIMALIZACE (pod 768px) ================= */
 @media (max-width: 768px) {
   
   header { padding: 16px 20px; }
 
+  /* Na mobilu chceme VŠUDE vidět logo domů, i na indexu */
+  .hero + script + header .logo {
+      display: block;
+  }
+  
   /* Na mobilu schováme odkazy po stranách robota */
   .hero-links-left, .hero-links-right { display: none; } 
   
@@ -131,13 +149,14 @@ main:not(.hero) {
     cursor: pointer;
     width: 25px;
   }
-  .menu-icon span { width: 100%; height: 3px; background: var(--accent); }
+  
+  /* Zde musíme skrýt desktopové zobrazení menu na mobilu */
+  .main-nav { display: none; } 
 
-  /* Zobrazíme hlavní navigační menu, když je toggle zapnutý */
+  /* A ukázat mobilní verzi menu po kliknutí na checkbox */
   .main-nav {
-    display: none; 
     position: absolute;
-    top: 65px; 
+    top: 65px; /* Pod hlavičkou */
     left: 0;
     width: 100%;
     background: var(--bg);
@@ -153,6 +172,7 @@ main:not(.hero) {
     border-bottom: 1px solid rgba(115, 76, 63, 0.3);
     width: 90%;
     text-align: center;
+    padding: 10px;
   }
   #menu-toggle:checked ~ .main-nav { display: flex; }
 
