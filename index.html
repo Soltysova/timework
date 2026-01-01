@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-  	<!--
-© 2026 Berta Soltysova / design
-
-Tento kód je chráněn autorským právem.
-Jakékoliv kopírování, úpravy nebo další šíření bez souhlasu autora jsou zakázány.
--->
+    <!--
+    © 2026 Berta Soltysova / design
+    All rights reserved.
+    -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="favicon.png" type="image/png">
-    <title>Portfolio – Úvod</title>
+    <title>Berta Soltysova – Portfolio</title>
 
-    <!-- Načtení fontů - OPRAVENO -->
- <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Fonty -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
 
     <!-- Three.js Import Map -->
     <script type="importmap">
@@ -31,6 +29,7 @@ Jakékoliv kopírování, úpravy nebo další šíření bez souhlasu autora js
 <body class="home-page">
 
 <header>
+    <!-- Logo se zobrazí jen na ostatních stránkách díky CSS třídě .home-page -->
     <a href="index.html"><img src="favicon.png" class="logo" alt="Logo"></a>
     
     <input type="checkbox" id="menu-toggle">
@@ -51,23 +50,28 @@ Jakékoliv kopírování, úpravy nebo další šíření bez souhlasu autora js
 </header>
 
 <main class="hero">
-    <div class="hero-links-left">
+    <!-- Desktop menu vlevo -->
+    <nav class="hero-links-left">
         <a href="pages/kresba.html">KRESBA</a>
         <a href="pages/malba.html">MALBA</a>
         <a href="pages/ilustrace.html">ILUSTRACE</a>
-    </div>
+    </nav>
 
+    <!-- Středový objekt -->
     <div class="hero-model" id="model">
+        <!-- Sem skript vloží <canvas> (3D model) -->
         <img src="img/robot-barva.png" alt="Robot" class="mobile-fallback">
     </div>
 
-    <div class="hero-links-right">
+    <!-- Desktop menu vpravo -->
+    <nav class="hero-links-right">
         <a href="pages/grafika.html">GRAFIKA</a>
         <a href="pages/3d.html">3D</a>
         <a href="pages/kontakt.html">KONTAKT</a>
-    </div>
+    </nav>
 </main>
 
+<!-- Skript pro 3D model -->
 <script type="module" src="js/robot-kostra.js"></script>
 
 </body>
