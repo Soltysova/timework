@@ -154,49 +154,60 @@ body:not(.home-page) header {
 /* ================= MOBILNÍ NASTAVENÍ (< 768px) ================= */
 
 @media (max-width: 768px) {
-  /* Na mobilu musíme header zobrazit i na indexu kvůli hamburgeru */
   header {
     display: flex !important;
-    justify-content: space-between;
-    padding: 20px;
+    justify-content: space-between !important; /* Logo vlevo, hamburger vpravo */
+    padding: 20px !important;
+  }
+
+  /* Logo zobrazíme všude kromě indexu */
+  .logo { 
+    display: block !important; 
+    order: 1; /* První prvek vlevo */
   }
 
   /* Na mobilním indexu schovat logo (hamburger zůstane vpravo) */
-  .home-page .logo { display: none; }
+  .home-page .logo { display: none !important; }
+  
+  /* Na indexu zarovnat hamburger k pravému okraji, když tam není logo */
+  .home-page header {
+    justify-content: flex-end !important;
+  }
 
-  /* Zobrazit hamburger */
-  .menu-icon { display: flex; order: 2; }
+  /* Zobrazit hamburger vpravo */
+  .menu-icon { 
+    display: flex !important; 
+    order: 2; /* Druhý prvek vpravo */
+  }
 
   /* Skrytí bočních menu, aby nebyla 2x */
   .hero-links-left, .hero-links-right { display: none !important; }
 
-  /* MOBILNÍ MENU PO ROZBALENÍ: Odkazy pod sebou a bez stylu tlačítek */
+  /* MOBILNÍ MENU PO ROZBALENÍ */
   .main-nav {
-    display: none; /* Skryté, dokud se neklikne na toggle */
+    display: none; 
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100vh;
     background: var(--bg);
-    flex-direction: column !important; /* <--- TOTO ZAJISTÍ SEZNAM POD SEBOU */
+    flex-direction: column !important; 
     justify-content: center;
     align-items: center;
     z-index: 2500;
     gap: 30px;
   }
   
-  /* Styl odkazů v mobilním menu - jako čistý seznam */
   .main-nav a {
     font-size: 24px;
-    background: none !important; /* Odstraní pozadí tlačítek */
+    background: none !important; 
     color: var(--text) !important;
     padding: 10px;
     border-radius: 0;
   }
 
   #menu-toggle:checked ~ .main-nav {
-    display: flex !important; /* Zobrazit po kliku */
+    display: flex !important; 
   }
 
-  /* Zobrazit statický obrázek místo 3D modelu na mobilu */
   .hero-model canvas { display: none !important; }
   .mobile-fallback { display: block; margin: 0 auto; }
 
@@ -328,14 +339,10 @@ body:not(.home-page) header {
   line-height: 1.7;
 }
 
-/* Toto zajistí, že lightbox bude vždy VŽDY nad menu, 
-   takže menu pod ním nebude vidět ani na něj nepůjde kliknout */
-
 .lg-backdrop, .lg-outer, .mfp-bg, .mfp-wrap, .lightbox-overlay {
-  z-index: 999999 !important; /* Extrémně vysoká vrstva pro lightbox */
+  z-index: 999999 !important; 
 }
 
-/* Vaše menu by mělo mít nižší z-index, např. 1000 */
 header, nav, .menu-index {
   z-index: 1000;
 }
@@ -357,8 +364,6 @@ header, nav, .menu-index {
   overflow: hidden;
 }
 
-/* LEVÝ BLOK – TEXT */
-
 .threed-text {
   background-color: var(--accent);
   color: var(--bg);
@@ -373,8 +378,6 @@ header, nav, .menu-index {
   background-color: var(--text);
 }
 
-/* PRAVÝ BLOK – ANIMACE */
-
 .threed-animation img,
 .threed-animation video {
   width: 100%;
@@ -382,17 +385,9 @@ header, nav, .menu-index {
   object-fit: contain;
 }
 
-/* ================= 3D ANIMATION ================= */
-
 .threed-animation {
   background-color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.threed-animation video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
 }
