@@ -391,3 +391,9 @@ header, nav, .menu-index {
   align-items: center;
   justify-content: center;
 }
+textarea {
+    width: 100%;       /* Roztáhne textareu na celou šířku kontejneru */
+    min-height: 150px; /* Nastaví minimální výšku na 150 pixelů */
+    padding: 10px;     /* Přidá vnitřní prostor pro lepší čitelnost */
+    box-sizing: border-box; /* Zajistí, že padding nezvětší celkovou šířku */
+}
