@@ -331,7 +331,7 @@ body:not(.home-page) header {
   max-width: 800px;
   margin: 2px auto;
   background-color: var(--white);
-  padding: 10px 60px 10px 60px;
+  padding: 80px 60px 10px 60px;
   text-align: center;
 }
 .contact .intro-text {
